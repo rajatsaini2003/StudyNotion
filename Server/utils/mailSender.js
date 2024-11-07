@@ -16,7 +16,7 @@ const mailSender =async(email, title, body) => {
             subject:`${title}`,
             html:`${body}`
         })
-        //console.log("Message sent: %s", info);
+        console.log("Message sent: %s", info);
         return info;
         
     } catch (error) {
@@ -27,3 +27,5 @@ const mailSender =async(email, title, body) => {
         })
     }
 }
+
+module.exports = mailSender;
