@@ -170,11 +170,11 @@ exports.login = async (req, res) => {
         }
 
         // user exists or not
-        const user = await User.findOne({email: email});
+        const user = await User.findOne({email: email}).populate('additionalDetails');
         if(!user){
             return res.status(401).json({
                 success: false,
-                message: "User not found"
+                message: "User not found, please register first"
             });
         }
 
@@ -183,7 +183,7 @@ exports.login = async (req, res) => {
             const payload ={
                 email :user.email,
                 id:user._id,
-                role:user.role
+                accountType:user.accountType
             }
             const token =JWT.sign(payload,process.env.JWT_SECRET, {
                 expiresIn: '24h' 
