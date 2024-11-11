@@ -91,9 +91,9 @@ exports.resetPassword = async(req, res) => {
 
         //update new hashed password
         await User.findOneAndUpdate(
-            {token: token},
-            {password: hashedPassword},
-            {new: true}
+            {token: token},// Use token to find the user
+            { password: hashedPassword }, // Update password
+            { new: true } // Return the updated document
         );
         
         //return success message

@@ -170,7 +170,7 @@ exports.login = async (req, res) => {
         }
 
         // user exists or not
-        const user = await User.findOne({email: email}).populate('additionalDetails');
+        const user = await User.findOne({email: email});
         if(!user){
             return res.status(401).json({
                 success: false,
@@ -219,17 +219,54 @@ exports.login = async (req, res) => {
     }
 }
 
-// // change password
-// exports.changePasword = async (req, res) =>{
-//     //get data from req body
-//     const { oldPassword, newPassword,confirmNewPassword} =req.body;
+// change password
+exports.changePasword = async (req, res) =>{
+    //get data from req body
+    const {email, oldPassword, newPassword,confirmNewPassword} =req.body;
 
-//     //validation
-//     if(!oldPassword || !newPassword || !confirmNewPassword){
-//         return res.status(400).json({
-//             success: false,
-//             message: "All fields are required"
-//         });
-//     }
-//     const user = await User.findOne({})
-// }
+    //validation
+    if(!oldPassword || !newPassword || !confirmNewPassword){
+        return res.status(400).json({
+            success: false,
+            message: "All fields are required"
+        });
+    }
+    //user exists or not
+    const user = await User.findOne({email: email});
+    if(!user){
+        return res.status(401).json({
+            success: false,
+            message: "User not found, please register first"
+        });
+    }
+    if(await bcrypt.compare(oldPassword, user.password)){
+        // 2 password match
+        if(newPassword!== confirmNewPassword){
+            return res.status(400).json({
+                success: false,
+                message: "Passwords do not match"
+            });
+        }
+        //Hash Password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        //update new hashed password in database
+        await User.findOneAndUpdate(
+            { email: email }, // Use email to find the user
+            { password: hashedPassword }, // Update password
+            { new: true } // Return the updated document
+        );
+
+        //return success message
+        return res.status(200).json({
+            success: true,
+            message: "Password changed successfully"
+        })
+    }
+    else{
+        return res.status(401).json({
+            success: false,
+            message: "Old password is incorrect"
+        });
+    }
+ }
