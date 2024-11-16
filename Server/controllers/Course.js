@@ -1,20 +1,20 @@
 const Course = require('../models/Course');
-const Tag = require('../models/Tag');
+const Category = require('../models/Category');
 const User = require('../models/User');
-const {uploadImageToClodinary} = require('../utils/imageUpload');
+const {uploadFileToClodinary} = require('../utils/fileUpload');
 
 // createCourse handler function
 exports.createCourse = async (req, res) => {
     try {
         
         // fetch data
-        const {courseName, courseDescription, whatYouWillLearn, price, tag} = req.body;
+        const {courseName, courseDescription, whatYouWillLearn, price, category} = req.body;
 
         //get thumbnail
         const thumbnail = req.file.thumbnailImage;
 
         //validation
-        if(!courseName || !courseDescription || !whatYouWillLearn || !price || !tag){
+        if(!courseName || !courseDescription || !whatYouWillLearn || !price || !category){
             return res.status(400).json({
                 success: false,
                 message: "All fields are required"
@@ -31,16 +31,16 @@ exports.createCourse = async (req, res) => {
             message: "Instructor not found"
         });
 
-        // check given tag is valid or not
-        const tagDetails = await Tag.findOne(tag);
-        if(!tagDetails){
+        // check given category is valid or not
+        const categoryDetails = await Category.findOne(category);
+        if(!categoryDetails){
             return res.status(400).json({
                 success: false,
-                message: "Invalid tag"
+                message: "Invalid category"
             });
         }
         // upload thumbnail to cloudinary
-        const thumbnailImage = await uploadImageToClodinary(thumbnail, process.env.FOLDER_NAME);
+        const thumbnailImage = await uploadFileToClodinary(thumbnail, process.env.FOLDER_NAME);
 
         //create an entry for new course
         const newCourse =  await Course.create({
@@ -49,7 +49,7 @@ exports.createCourse = async (req, res) => {
             instructor:InstructorDetails._id,
             whatYouWillLearn:whatYouWillLearn,
             price,
-            tag:tagDetails._id,
+            category:categoryDetails._id,
             thumbnail:thumbnailImage.secure_url
         })
         await User.findByIdAndUpdate({
@@ -62,7 +62,7 @@ exports.createCourse = async (req, res) => {
             {new:true}
         )
 
-        // update the tag schema
+        // update the category schema
         // TODO:HW
 
         //return response
