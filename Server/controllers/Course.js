@@ -102,3 +102,24 @@ exports.showAllCourse = async (req, res) => {
         })
     }
 }
+
+//get Course Details
+exports.getCourseDetails = async (req, res) =>{
+    try {
+        //get id
+        const {courseId} = req.body;
+        //find course details
+        const courseDetails = await Course.findById(courseId).
+                                        populate(
+                                            {
+                                                path :"instructor",
+                                                populate:{
+                                                    path :"additionalDetails"
+                                                },
+                                            }
+                                        )
+                                        .populate("category")
+    } catch (error) {
+        
+    }
+}
