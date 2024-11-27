@@ -119,7 +119,33 @@ exports.getCourseDetails = async (req, res) =>{
                                             }
                                         )
                                         .populate("category")
-    } catch (error) {
+                                        .populate("ratingAndReviews")
+                                        .populate({
+                                            path: "courseContent",
+                                            populate:{
+                                                path:"subSection"
+                                            }
+                                        }).exec();
         
+        //validation
+        if(!courseDetails){
+            return res.status(400).json({
+                success: false,
+                message: `Course not found with ID: ${courseId}`
+            })
+        }
+        //return res
+        return res.status(200).json({
+            success: true,
+            message: "Course details fetched successfully",
+            data:courseDetails
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to get course details",
+            error: error.message
+        })
     }
 }
