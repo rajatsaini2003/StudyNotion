@@ -80,8 +80,15 @@ exports.signUp = async (req, res) => {
     } = req.body;
     
     //validate 
-    if(!firstName || !lastName || !email || !password 
-            || !confirmPassword || !contactNumber || !otp){
+    if( 
+        !firstName || 
+        !lastName || 
+        !email || 
+        !password || 
+        !confirmPassword || 
+        !contactNumber || 
+        !otp
+        ){
             return res.status(400).json({
                 success: false,
                 message: "All fields are required"

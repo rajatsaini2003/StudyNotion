@@ -46,13 +46,14 @@ exports.showAllCategory = async (req, res) => {
     }
 }
 
-exports.showAllCategory = async (req, res) => {
+//category detail page 
+exports.categoryPageDetails = async (req, res) => {
     try {
         const {categoryId} = req.body;
 
         //get courses for the specified category
         const selectedCategory = await Category.findById(categoryId)
-            .populate("courses").exec();
+            .populate("Course").exec();
             console.log(selectedCategory);
         if(!selectedCategory){
             return res.status(404).json({
@@ -78,7 +79,6 @@ exports.showAllCategory = async (req, res) => {
         for( const category of otherCategories){
             differentCourse.push(...category.course);
         }
-
         //get top selling course across all category
         const allCategory = await Category.find().populate("Course");
         const allCourse = allCategory.flatMap((category) => category.course);

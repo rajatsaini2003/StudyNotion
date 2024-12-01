@@ -115,5 +115,26 @@ exports.getAverageRating = async (req,res)=>{
 }
 
 //getAllRating
+exports.getAllRating = async (req,res) => {
+    //get sorted by rating
+    try {
+        const allReviews = await RatingAndReview.find(
+            ).sort({rating: -1})
+            .populate({path: "User",
+            select: "firstName lastName email image"})
+            .populate({path: "Course",
+            select: "courseName"})
+            .exec();
+            
+        return res.status(200).json({
+            success: true,
+            message:"all reviews fetched successfully",
+            data:allReviews,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: error.message});
+    }
+}
 
 

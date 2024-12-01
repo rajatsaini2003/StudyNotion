@@ -63,7 +63,11 @@ exports.createCourse = async (req, res) => {
         )
 
         // update the category schema
-        // TODO:HW
+        await Category.findByIdAndUpdate(categoryDetails._id, {
+            $push: {
+                course: newCourse._id
+            }
+        }, {new: true})
 
         //return response
         return res.status(200).json({
