@@ -23,26 +23,26 @@ exports.sendOTP = async (req, res) => {
         }
 
         // else generate OTP
-        var OTP =otpGenerator.generate(6,{
+        var otp =otpGenerator.generate(6,{
             upperCaseAlphabets:false,
             lowerCaseAlphabets:false,
             numbers: true,
             specialCharacters: false
         });
-        console.log(" OTP generated : " + OTP);
-        const result = await OTP.findOne({otp:OTP});
+        console.log(" OTP generated : " + otp);
+        const result = await OTP.findOne({otp:otp});
 
         while (result){
-            OTP =otpGenerator.generate(6,{
+            otp =otpGenerator.generate(6,{
                 upperCaseAlphabets:false,
                 lowerCaseAlphabets:false,
                 numbers: true,
                 specialCharacters: false
             });
-            result = await OTP.findOne({otp:OTP});
+            result = await OTP.findOne({otp:otp});
         }
 
-        const otpPayload = {email:email, otp:OTP};
+        const otpPayload = {email:email, otp:otp};
 
         //create an entry for otp
         const otpBody = await OTP.create(otpPayload);
@@ -227,7 +227,7 @@ exports.login = async (req, res) => {
 }
 
 // change password
-exports.changePasword = async (req, res) =>{
+exports.changePassword = async (req, res) =>{
     //get data from req body
     const {email, oldPassword, newPassword,confirmNewPassword} =req.body;
 

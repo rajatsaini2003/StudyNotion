@@ -53,8 +53,9 @@ exports.categoryPageDetails = async (req, res) => {
 
         //get courses for the specified category
         const selectedCategory = await Category.findById(categoryId)
-            .populate("Course").exec();
-            console.log(selectedCategory);
+                                            .populate("Course")
+                                            .exec();
+        console.log(selectedCategory);
         if(!selectedCategory){
             return res.status(404).json({
                 success: false,

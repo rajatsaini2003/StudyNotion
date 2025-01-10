@@ -48,7 +48,7 @@ const courseSchema = new mongoose.Schema({
         required: true
     }],
     instructions: {
-        type: [string]
+        type: [String]
     },
     status: {
         type: String,

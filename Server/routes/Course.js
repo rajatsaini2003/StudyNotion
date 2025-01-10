@@ -6,7 +6,7 @@ const {
     createCourse,
     showAllCourse,
     getCourseDetails
-} = require('../controllers/contactUs');
+} = require('../controllers/Course');
 
 // Category Controllers Import
 const {
