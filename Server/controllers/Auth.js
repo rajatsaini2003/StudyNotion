@@ -23,24 +23,24 @@ exports.sendOTP = async (req, res) => {
         }
 
         // else generate OTP
-        var otp =otpGenerator.generate(6,{
+        let otp = otpGenerator.generate(6,{
             upperCaseAlphabets:false,
             lowerCaseAlphabets:false,
-            numbers: true,
-            specialCharacters: false
+            specialChars:false,
         });
-        console.log(" OTP generated : " + otp);
-        const result = await OTP.findOne({otp:otp});
+        
 
-        while (result){
-            otp =otpGenerator.generate(6,{
+        let result = await OTP.findOne({otp:otp});
+
+        while (result) {
+            otp = otpGenerator.generate(6,{
                 upperCaseAlphabets:false,
                 lowerCaseAlphabets:false,
-                numbers: true,
-                specialCharacters: false
+                specialChars:false,
             });
-            result = await OTP.findOne({otp:otp});
+            result = OTP.findOne({otp:otp});
         }
+        console.log(" OTP generated : " + otp);
 
         const otpPayload = {email:email, otp:otp};
 
@@ -113,7 +113,6 @@ exports.signUp = async (req, res) => {
     }
     //find most recent OTP for user
     const RecentOtp = await OTP.find({email}).sort({createdAt:-1}).limit(1);
-    console.log("recent OTP := "+ RecentOtp);
     
     // validate OTP
     if(RecentOtp.length == 0){
@@ -122,23 +121,25 @@ exports.signUp = async (req, res) => {
             message: "OTP not found"
         });
     }
-    else if( otp !== RecentOtp){
+    else if( otp !== RecentOtp[0].otp){
         return res.status(400).json({
             success: "false",
-            message: "All field are required"
+            message: "otp does not match"
         })
     }
-
+    console.log("recent OTP := "+ RecentOtp[0].otp);
     //Hash Password
     const hashedPassword = await bcrypt.hash(password, 10);
-
     //create entry in db
-    const profileDetaile = await Profile.create({
-        gender: null,
+    let approved = "";
+	approved === "Instructor" ? (approved = false) : (approved = true);
+
+    const profileDetails = await Profile.create({
+        gender:null,
         dateOfBirth: null,
-        about: null,
-        contactNumber: contactNumber
-    })
+        about:null,
+        contactNumber:null,
+    });
     const newUser = await User.create({
         firstName,
         lastName,
@@ -146,10 +147,9 @@ exports.signUp = async (req, res) => {
         contactNumber,
         password: hashedPassword,
         accountType,
-        additionalDetails:profileDetaile._id,
+        additionalDetails:profileDetails._id,
         image : `https://api.dicebear.com/9.x/initials/svg?seed=${firstName} ${lastName}`
     });
-
     //return response
     return res.status(200).json({
         success: true,
