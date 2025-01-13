@@ -6,10 +6,11 @@ const User =require('../models/User')
 exports.auth = async (req, res, next) => {
     try {
         //extract token
-        const token = req.cookie.token 
+        //console.log(req.cookies.token)
+        const token = req.cookies.token 
             || req.body.token 
              || req.header('Authorization').replace("Bearer ","");
-
+        //console.log(token);
         if(!token){
             return res.status(403).json({
                 success: false,
@@ -17,8 +18,8 @@ exports.auth = async (req, res, next) => {
             });
         }
         try {
-            const decode =await JWT.verify(token , process.env.JWT_SECRET);
-            console.log(decode);
+            const decode =JWT.verify(token , process.env.JWT_SECRET);
+            //console.log(decode);
             req.user=decode;
         } catch (error) {
             return res.status(401).json({
@@ -30,7 +31,7 @@ exports.auth = async (req, res, next) => {
     } catch (error) {
         return res.status(401).json({
             success: false,
-            message:"something went wrong validating token"
+            message:"something went wrong validating token"+error.message
         })
     }
 }

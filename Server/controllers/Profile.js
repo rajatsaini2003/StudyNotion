@@ -1,6 +1,8 @@
 const Profile = require('../models/Profile');
 const User = require('../models/User');
 const Course = require('../models/Course');
+const { uploadFileToCloudinary } = require("../utils/fileUpload");
+
 exports.updateProfile = async (req, res) => {
     try {
         // get data
@@ -135,4 +137,36 @@ exports.getAllUserDetails = async (req, res) => {
         })
     }
     
+}
+
+exports.updateProfilePicture = async (req,res) =>{
+    try {
+        const profilePicture = req.files.profilePicture;
+        const userId = req.user.id;
+        const image = await uploadFileToCloudinary(
+            profilePicture,
+            process.env.FOLDER_NAME,
+            1000,
+            1000
+        )
+        //console.log(image);
+        const updateProfile = await User.findByIdAndUpdate(
+            {_id:userId},
+            {image:image.secure_url},
+            {new : true}
+        )
+        return res.status(200).json({
+            success: true,
+            message: "Profile picture updated successfully",
+            data:updateProfile.image
+        })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to update profile picture",
+            error: error.message
+        })
+    }
 }
