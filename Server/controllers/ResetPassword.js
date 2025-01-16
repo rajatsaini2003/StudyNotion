@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const mailSender = require('../utils/mailSender');
 const bcrypt = require('bcrypt');
-
+const crypto= require('crypto');
 
 // resetPasswordToken
 exports.resetPasswordToken = async (req, res) =>{
@@ -18,17 +18,16 @@ exports.resetPasswordToken = async (req, res) =>{
         })
 
         //generate token
-        const token = crypto.randomUUID();
+        const token = crypto.randomBytes(20).toString('hex');
 
         //update user by adding token and expiration time
-        const updatedDetails = User.findOneAndUpdate( 
+        const updatedDetails = await User.findOneAndUpdate( 
                     {email:email},
                     {
                         token:token,
                         resetPasswordExpires:Date.now() + 5*60*1000
                     },
                     {new: true})
-
         //create url
         const url = `https://localhost:3000/update-password/${token}`;
 

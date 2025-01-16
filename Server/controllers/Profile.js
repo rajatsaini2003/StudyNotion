@@ -6,13 +6,13 @@ const { uploadFileToCloudinary } = require("../utils/fileUpload");
 exports.updateProfile = async (req, res) => {
     try {
         // get data
-        const {dataOfBirth ="", about ="", contactNumber, gender} = req.body;
+        const {dateOfBirth ="", about ="", contactNumber, gender} = req.body;
 
         //get userID
         const id = req.user.id;
 
         //validation
-        if(!contactNumber || !gender || !id){
+        if(!contactNumber || !gender){
             return res.status(400).json({
                 success: false,
                 message: "Missing required fields"
@@ -22,28 +22,19 @@ exports.updateProfile = async (req, res) => {
         //find profile
         const userDetails = await User.findById(id);
         const profileId = userDetails.additionalDetails;
-        const profileDetails = await Profile.findById(profileId);
-        
-        // // update profile
-        profileDetails.dateOfBirth = dateOfBirth;
-        profileDetails.about = about;
-        profileDetails.contactNumber = contactNumber;
-        profileDetails.gender = gender;
-        await profileDetails.save();
-        // const profile = await Profile.findByIdAndUpdate(profileId, 
-        //                                 {
-        //                                     dataOfBirth, 
-        //                                     about, 
-        //                                     contactNumber, 
-        //                                     gender
-        //                                 }, 
-        //                                 {new: true});
-
-        // return success response
+        const updatedProfile = await Profile.findByIdAndUpdate(profileId,
+            {
+                dateOfBirth,
+                about,
+                contactNumber,
+                gender
+            },
+            {new: true}
+        )
         return res.status(200).json({
             success: true,
             message: "Profile updated successfully",
-            profileDetails
+            updatedProfile
         })
     } catch (error) {
         return res.status(500).json({
@@ -122,7 +113,7 @@ exports.getAllUserDetails = async (req, res) => {
                 message: "User not found"
             });
         }
-
+        userDetails.password = undefined;
         //return res
         return res.status(200).json({
             success: true,
@@ -170,3 +161,11 @@ exports.updateProfilePicture = async (req,res) =>{
         })
     }
 }
+// exports.getEnrolledCourses = async (req, res) =>{
+//     const userId = req.user.id;
+//     const userDetails = await User.findOne({_id:userId}).
+//                         populate({
+//                             path: 'courses',
+//                             populate: {path: 'courseContent', select: 'name'}
+//                         });
+// }
