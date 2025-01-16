@@ -3,15 +3,14 @@ const courseSchema = new mongoose.Schema({
     courseName: {
         type: String
     },
-    courseDuration: {
-        type: String,
-        trim: true
+    description: {
+        type: String
     },
-    instructor: {
+    instructor: [{
         type: mongoose.Schema.Types.ObjectId,
         ref:'User',
         required: true
-    },
+    }],
     whatYouWillLearn: {
         type: String
     },
@@ -36,7 +35,6 @@ const courseSchema = new mongoose.Schema({
     },
     tag: {
         type: [String],
-        required: true
     },
     category:{
         type: mongoose.Schema.Types.ObjectId,
@@ -53,6 +51,10 @@ const courseSchema = new mongoose.Schema({
     status: {
         type: String,
         enum :["Draft", "Published"]
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
 });
 module.exports = mongoose.model('Course', courseSchema);

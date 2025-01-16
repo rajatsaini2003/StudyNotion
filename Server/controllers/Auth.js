@@ -40,13 +40,13 @@ exports.sendOTP = async (req, res) => {
             });
             result = OTP.findOne({otp:otp});
         }
-        console.log(" OTP generated : " + otp);
+        //.log(" OTP generated : " + otp);
 
         const otpPayload = {email:email, otp:otp};
 
         //create an entry for otp
         const otpBody = await OTP.create(otpPayload);
-        console.log(otpPayload);
+        //console.log(otpPayload);
 
         // return response successful
         res.status(200).json({
@@ -127,7 +127,7 @@ exports.signUp = async (req, res) => {
             message: "otp does not match"
         })
     }
-    console.log("recent OTP := "+ RecentOtp[0].otp);
+    //console.log("recent OTP := "+ RecentOtp[0].otp);
     //Hash Password
     const hashedPassword = await bcrypt.hash(password, 10);
     //create entry in db

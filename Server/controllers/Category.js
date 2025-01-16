@@ -16,7 +16,7 @@ exports.createCategory = async (req, res) => {
             name : name,
             description : description
         });
-        console.log(categoryDetails);
+        //console.log(categoryDetails);
         //return response successful
         res.status(200).json({
             success: true,

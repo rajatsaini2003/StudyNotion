@@ -1,20 +1,20 @@
 const Course = require('../models/Course');
 const Category = require('../models/Category');
 const User = require('../models/User');
-const {uploadFileToClodinary} = require('../utils/fileUpload');
+const {uploadFileToCloudinary} = require('../utils/fileUpload');
 
 // createCourse handler function
 exports.createCourse = async (req, res) => {
     try {
         
         // fetch data
-        const {courseName, courseDescription, whatYouWillLearn, price, category} = req.body;
-
+        const {courseName, courseDescription, whatYouWillLearn, price, category, tag, instructions} = req.body;
         //get thumbnail
-        const thumbnail = req.file.thumbnailImage;
-
+        const thumbnail = req.files.thumbnailImage;
         //validation
-        if(!courseName || !courseDescription || !whatYouWillLearn || !price || !category){
+        if(!courseName || !courseDescription || !whatYouWillLearn 
+            || !price || !category || !instructions || !tag
+        ){
             return res.status(400).json({
                 success: false,
                 message: "All fields are required"
@@ -32,7 +32,7 @@ exports.createCourse = async (req, res) => {
         });
 
         // check given category is valid or not
-        const categoryDetails = await Category.findOne(category);
+        const categoryDetails = await Category.findOne({_id:category});
         if(!categoryDetails){
             return res.status(400).json({
                 success: false,
@@ -40,7 +40,7 @@ exports.createCourse = async (req, res) => {
             });
         }
         // upload thumbnail to cloudinary
-        const thumbnailImage = await uploadFileToClodinary(thumbnail, process.env.FOLDER_NAME);
+        const thumbnailImage = await uploadFileToCloudinary(thumbnail, process.env.FOLDER_NAME);
 
         //create an entry for new course
         const newCourse =  await Course.create({
@@ -50,7 +50,9 @@ exports.createCourse = async (req, res) => {
             whatYouWillLearn:whatYouWillLearn,
             price,
             category:categoryDetails._id,
-            thumbnail:thumbnailImage.secure_url
+            thumbnail:thumbnailImage.secure_url,
+            tag,
+            instructions
         })
         await User.findByIdAndUpdate({
             _id:InstructorDetails._id},
