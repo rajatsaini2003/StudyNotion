@@ -40,7 +40,7 @@ exports.sendOTP = async (req, res) => {
             });
             result = OTP.findOne({otp:otp});
         }
-        //.log(" OTP generated : " + otp);
+        //console.log(" OTP generated : " + otp);
 
         const otpPayload = {email:email, otp:otp};
 

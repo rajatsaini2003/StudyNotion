@@ -48,19 +48,19 @@ exports.updateProfile = async (req, res) => {
 exports.deleteProfile = async (req, res) => {
     try {
         //get data
-        const {id} = req.user.id;
-
+        const id = req.user.id;
+        console.log(id);
         //validation
         const userDetails = await User.findById(id);
-        if(!userDetails){
-            return res.status(404).json({
-                success: false,
-                message: "User not found"
-            });
-        }
+        // if(!userDetails){
+        //     return res.status(404).json({
+        //         success: false,
+        //         message: "User not found"
+        //     });
+        // }
 
         //delete profile
-        const deletedProfile = await User.findByIdAndDelete(userDetails.additionalDetails);
+        const deletedProfile = await Profile.findByIdAndDelete(userDetails.additionalDetails);
         if(!deletedProfile){
             return res.status(404).json({
                 success: false,
