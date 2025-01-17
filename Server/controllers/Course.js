@@ -2,6 +2,7 @@ const Course = require('../models/Course');
 const Category = require('../models/Category');
 const User = require('../models/User');
 const {uploadFileToCloudinary} = require('../utils/fileUpload');
+const { findOneAndUpdate } = require('../models/OTP');
 
 // createCourse handler function
 exports.createCourse = async (req, res) => {
@@ -44,8 +45,8 @@ exports.createCourse = async (req, res) => {
 
         //create an entry for new course
         const newCourse =  await Course.create({
-            courseName, 
-            courseDescription,
+            courseName:courseName, 
+            description:courseDescription,
             instructor:InstructorDetails._id,
             whatYouWillLearn:whatYouWillLearn,
             price,
@@ -125,7 +126,7 @@ exports.getCourseDetails = async (req, res) =>{
                                             }
                                         )
                                         .populate("category")
-                                        .populate("ratingAndReviews")
+                                        .populate("ratingAndReview")
                                         .populate({
                                             path: "courseContent",
                                             populate:{
@@ -151,6 +152,88 @@ exports.getCourseDetails = async (req, res) =>{
         return res.status(500).json({
             success: false,
             message: "Failed to get course details",
+            error: error.message
+        })
+    }
+}
+
+exports.editCourseDetails = async(req,res) =>{
+    try {
+        const {courseName, courseDescription, whatYouWillLearn, price, categoryID, tag, courseId} = req.body;
+        //get thumbnail
+        const thumbnail = req.files.thumbnail; 
+        if(!courseId){
+            return res.status(400).json({
+                success: false,
+                message: "Course ID required"
+            });
+        }
+        if(!courseName && !courseDescription && !whatYouWillLearn 
+            && !price && !categoryID && !tag && !thumbnail){
+                return res.status(400).json({
+                    success: false,
+                    message: "Enter atleast one field to update"
+                });
+        }
+        const categoryDetails = await Category.findOne({_id:categoryID});
+        if(!categoryDetails){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid category"
+            });
+        }
+        let thumbnailImage = undefined;
+        if(thumbnail)
+            thumbnailImage = await uploadFileToCloudinary(thumbnail, process.env.FOLDER_NAME);
+        //find course details
+        const updatedCourse = await Course.findOneAndUpdate(
+                                    {_id: courseId},
+                                    {
+                                    courseName:courseName, 
+                                    description:courseDescription,
+                                    whatYouWillLearn:whatYouWillLearn,
+                                    price:price,
+                                    category:categoryID,
+                                    thumbnail:thumbnailImage.secure_url,
+                                    tag:tag
+                                    },
+                                    {new:true}
+                                )
+        if(!updatedCourse){
+            return res.status(400).json({
+                success: false,
+                message: "Course not found with given id",
+                error:error.message
+            })
+        }
+        const updatedCoursedetails = await Course.findOne({
+            _id: courseId,
+          })
+            .populate({
+              path: "instructor",
+              populate: {
+                path: "additionalDetails", 
+              },
+            })
+            .populate("category")
+            .populate("ratingAndReview")
+            .populate({
+              path: "courseContent",
+              populate: {
+                path: "subSection",
+              },
+            })
+            .exec()
+        return res.status(200).json({
+            success: true,
+            message: "Course details updated successfully",
+            data: updatedCoursedetails
+        })
+
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: "Failed to edit course details",
             error: error.message
         })
     }
