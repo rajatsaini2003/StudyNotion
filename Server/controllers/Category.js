@@ -53,7 +53,7 @@ exports.categoryPageDetails = async (req, res) => {
 
         //get courses for the specified category
         const selectedCategory = await Category.findById(categoryId)
-                                            .populate("Course")
+                                            .populate("course")
                                             .exec();
         console.log(selectedCategory);
         if(!selectedCategory){
@@ -75,13 +75,13 @@ exports.categoryPageDetails = async (req, res) => {
 
         //get course for other categories
         const otherCategories = await Category.find({_id: {$ne:categoryId}})
-           .populate("Course").exec();
+           .populate("course").exec();
         let differentCourse = [];
         for( const category of otherCategories){
             differentCourse.push(...category.course);
         }
         //get top selling course across all category
-        const allCategory = await Category.find().populate("Course");
+        const allCategory = await Category.find().populate("course");
         const allCourse = allCategory.flatMap((category) => category.course);
         const mostSelling = allCourse.sort((a, b) => b.sold - a.sold)
                                      .slice(0, 10);
