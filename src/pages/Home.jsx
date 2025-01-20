@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { FaArrowRight } from "react-icons/fa";
-
+import HighlightText from '../components/core/HomePage/HighlightText'
 const Home = () => {
   return (
     <div>
@@ -18,6 +18,10 @@ const Home = () => {
             </div>
         </div>
         </Link>
+        <div>
+          Empower Your Future with 
+          <HighlightText text = {' Coding Skills'}/>
+        </div>
       </div>
 
       {/* Section 2 */}
