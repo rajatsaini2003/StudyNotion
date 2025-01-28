@@ -55,7 +55,7 @@ const Home = () => {
       {/* codesection 1*/}
       <div>
         <CodeBlocks 
-        position ={"lg:flex-row"}
+        position ={"flex-col lg:flex-row"}
         heading = {
           <div className='text-4xl font font-semibold'>
             Unlock Your
@@ -80,11 +80,45 @@ const Home = () => {
               active: false,
           }
          }
-        codeblock={`<!DOCTYPE html>\n<html lang="en">\n<head>\n<title>This is myPage</title>\n</head>\n<body>\n<h1><a href="/">Header</a></h1>\n<nav> <a href="/one">One</a> <a href="/two">Two</a> <a href="/three">Three</a></nav>\n</body>`}
+        codeblock={`<!DOCTYPE html>\n<html lang="en">\n<head>\n<title>This is myPage</title>\n</head>\n<body>\n<h1><a href="/">Header</a></h1>\n<nav> <a href="/one">One</a> \n<a href="/two">Two</a>\n <a href="/three">Three</a></nav>\n</body>`}
         codeColor={"text-yellow-25"}
+        bgGrad={<div className="codeblock1 absolute"></div>}
         />
       </div>
       {/* codesection 2*/}
+       <div>
+        <CodeBlocks 
+        position ={" flex-col lg:flex-row-reverse"}
+        heading = {
+          <div className='text-4xl font font-semibold '>
+            Unlock Your
+            <HighlightText text={" coding potential "} />
+            with out online courses
+          </div>
+        }
+        subheading={
+           "Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you."
+        }
+        ctabtn1={
+          {
+            btntext:"try it yourself",
+            linkto:"/signup",
+            active: true
+        }
+        }
+        ctabtn2={
+          {
+              btntext: "Learn More",
+              linkto: "/login",
+              active: false,
+          }
+         }
+        codeblock={`import React from "react";\nimport CTAButton from "./Button";\nimport TypeAnimation from "react-type";\nimport { FaArrowRight } from "react-icons/fa";\n\nconst Home = () => {\nreturn (\n<div>Home</div>\n)\n}\nexport default Home;`}
+        codeColor={"text-blue-25"}
+        bgGrad={<div className="codeblock2 absolute"></div>}
+        />
+       </div>
+
       </div>
 
       {/* Section 2 */}
