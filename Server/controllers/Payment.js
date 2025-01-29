@@ -128,7 +128,7 @@ exports.verifySignature = async (req, res) => {
             const emailResponse = await mailSender(
                 enrolledStudent.email,
                 "Course Enrollment Confirmation",
-                "congraculations, you are onboarded into new NextAcademy course"
+                "congraculations, you are onboarded into new StudyNotion course"
             );
             if(!emailResponse.success){
                 console.error("Failed to send email: " + emailResponse.message);

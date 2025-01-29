@@ -5,6 +5,7 @@ import HighlightText from '../components/core/HomePage/HighlightText'
 import CTAButton from '../components/core/HomePage/CTAButton.jsx'
 import Banner from '../assets/Images/banner.mp4'
 import CodeBlocks from '../components/core/HomePage/CodeBlocks.jsx';
+import Footer from '../components/common/Footer.jsx';
 const Home = () => {
   return (
     <div>
@@ -126,7 +127,7 @@ const Home = () => {
       {/* Section 3 */}
 
       {/* Footer */}
-
+      <Footer />
     </div>
   )
 }

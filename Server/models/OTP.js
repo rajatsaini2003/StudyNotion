@@ -22,7 +22,7 @@ const OTPSchema = new mongoose.Schema({
 async function sendVerificationEmail(email,otp){
     try {
 
-        const title = 'NextAcademy - Verification Code';
+        const title = 'StudyNotion - Verification Code';
         const mailResponse= await mailSender(email, title,otp);
         console.log("Email sent successfully: " + mailResponse);
 
