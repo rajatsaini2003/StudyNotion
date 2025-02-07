@@ -6,6 +6,9 @@ import CTAButton from '../components/core/HomePage/CTAButton.jsx'
 import Banner from '../assets/Images/banner.mp4'
 import CodeBlocks from '../components/core/HomePage/CodeBlocks.jsx';
 import Footer from '../components/common/Footer.jsx';
+import TimeLineSection from '../components/core/HomePage/TimeLineSection.jsx';
+import LearningLanguageSection from '../components/core/HomePage/LearningLanguageSection.jsx';
+import InstructorSection from '../components/core/HomePage/InstructorSection.jsx';
 const Home = () => {
   return (
     <div>
@@ -145,13 +148,13 @@ const Home = () => {
         </div>
         <div className='mx-auto w-11/12 max-w-maxContent flex flex-col items-center justify-between gap-5'>
           
-          <div className='flex flex-row gap-5 '>
+          <div className='flex flex-row gap-5 mb-10 mt-20'>
             <div className='text-4xl font-semibold w-[45%]'>
               Get the Skills you need for a
               <HighlightText text={" job that is in demand"} />
             </div>
-            <div className='flex flex-col gap-10 w-[40%]'>
-              <div>
+            <div className='flex flex-col gap-10 w-[40%] items-start'>
+              <div className='text-[16px]'>
                 The modern StudyNotion is the dictates its own terms. Today, to be 
                 a competitive specialist requires more than professional skills.
               </div>
@@ -164,10 +167,23 @@ const Home = () => {
           </div>
           
 
+          <TimeLineSection/>
+         <LearningLanguageSection/>
         </div>
+
+         
+         
       </div>
 
       {/* Section 3 */}
+      <div className='w-11/12 mx-auto max-w-maxContent flex-col items-center pt-[100px] 
+      justify-between gap-8 first-letter bg-richblack-900 text-white'>
+        <InstructorSection/>
+
+        <h2 className='text-center text-4xl font-semibold mt-10'> 
+          Review Form Other Learners</h2>
+        {/* Review Slider*/}
+      </div>
 
       {/* Footer */}
       <Footer />
