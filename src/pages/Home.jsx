@@ -9,6 +9,7 @@ import Footer from '../components/common/Footer.jsx';
 import TimeLineSection from '../components/core/HomePage/TimeLineSection.jsx';
 import LearningLanguageSection from '../components/core/HomePage/LearningLanguageSection.jsx';
 import InstructorSection from '../components/core/HomePage/InstructorSection.jsx';
+import ExploreMore from '../components/core/HomePage/ExploreMore.jsx';
 const Home = () => {
   return (
     <div>
@@ -122,15 +123,16 @@ const Home = () => {
         bgGrad={<div className="codeblock2 absolute"></div>}
         />
        </div>
-
+       <ExploreMore/>
       </div>
 
       {/* Section 2 */}
       <div className='bg-pure-greys-5 text-richblue-700' >
-        <div className='homepage_bg h-[333px]'>
+        <div className='homepage_bg lg:h-[333px] h-[100px]'>
 
          <div className='w-11/12 max-w-maxContent flex items-center justify-center gap-5 mx-auto'>
-            <div className='flex flex-row gap-7 text-white mt-[150px]'>
+          <div className='hidden lg:block h-[450px]'></div>
+            <div className='flex flex-row gap-7 text-white lg:mt-0 mt-8'>
               <CTAButton active={true} linkto="/signup</div>">
                   <div className='flex flex-row items-center gap-3'>
                     Explore Full Catalog
