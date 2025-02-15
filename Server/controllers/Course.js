@@ -203,7 +203,6 @@ exports.editCourseDetails = async(req,res) =>{
             return res.status(400).json({
                 success: false,
                 message: "Course not found with given id",
-                error:error.message
             })
         }
         const updatedCoursedetails = await Course.findOne({
