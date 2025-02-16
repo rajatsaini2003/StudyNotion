@@ -1,17 +1,27 @@
-import {createSlice} from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialState={
-    token:localStorage.getItem('token')?localStorage.getItem('token'):null,
+const initialState = {
+    signupData: null,
+    token: localStorage.getItem("token") ? localStorage.getItem("token") : null,
+    loading:false
 }
 
 const authSlice = createSlice({
-    name:'auth',
+    name:"auth",
     initialState:initialState,
     reducers:{
-        setToken(state,value){
-            state.token = value.payload;
+        setSignupData: (state,value) =>{
+            state.signupData = value.payload;
         },
-    },
-});
-export const {setToken} = authSlice.actions;
-export default authSlice.reducer
+        setLoading(state, value) {
+            state.loading = value.payload;
+          },
+          setToken(state, value) {
+            state.token = value.payload;
+          },
+    }
+})
+
+export const { setSignupData, setLoading, setToken } = authSlice.actions;
+
+export default authSlice.reducer;
