@@ -9,32 +9,40 @@ import ProfileDropDown from '../core/Auth/ProfileDropDown'
 import { apiConnector } from '../../services/apiconnector'
 import { categories } from '../../services/apis'
 import { IoIosArrowDropdown } from 'react-icons/io'
-
+import { useDispatch } from 'react-redux'
+import { setLoading } from '../../slices/authSlice'
 const NavBar = () => {
-
+    const dispatch = useDispatch();
     const {token}=useSelector((state)=>state.auth);
     const {user}=useSelector((state)=>state.profile);
     const {totalItems} = useSelector((state)=>state.cart);
-
+    const {loading} = useSelector((state)=>state.auth);
     const [subLinks, setSubLinks] = useState([]);
     const fetchCategories = async () => {
+        dispatch(setLoading(true));
+    
         try {
+            //const startTime = Date.now(); // Record start time
             const res = await apiConnector("GET", categories.CATEGORIES_API);
-            setSubLinks(res.data.allCategory)
-            
+            setSubLinks(res.data.allCategory);
+    
+            // const elapsedTime = Date.now() - startTime;
+            // const minLoadingTime = 5000; // Ensure loader is visible for at least 1 second
+    
+            // if (elapsedTime < minLoadingTime) {
+            //     await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsedTime));
+            // }
         } catch (error) {
             console.error(error);
         }
+
+        dispatch(setLoading(false));
     };
+    
     useEffect(() => {
         fetchCategories();
-        console.log(subLinks);
+        // eslint-disable-next-line
     }, []);
-    // const subLinks=[
-    //     {name: "Category1",link:"/category/category1"},
-    //     {name: "Category2",link:"/category/category2"},
-    //     {name: "Category3",link:"/category/category3"}
-    // ]
 
     const location = useLocation();
     const matchRoute =(route)=>{
@@ -54,7 +62,7 @@ const NavBar = () => {
             <nav>
                 <ul className='flex flex-row gap-x-6 text-richblack-25'>
                     {
-                        NavbarLinks.map((link,index)=>{
+                        (NavbarLinks.map((link,index)=>{
                             return (
                                 <li key={index}>
                                     {
@@ -66,21 +74,24 @@ const NavBar = () => {
                                             translate-x-[-50%] translate-y-[20%] top-[50%]
                                             flex flex-col rounded-md bg-richblack-5 p-4 text-richblack-900
                                             opacity-0 transition-all duration-200 group-hover:visible
-                                            group-hover:opacity-100 lg:w-fit z-10 justify-center items-center'>
+                                            group-hover:opacity-100 lg:min-w-[150px] z-10 justify-center items-center'>
                                                 <div className='absolute left-[50%] top-0 h-6 w-6 rotate-45 rounded bg-richblack-5
                                                 translate-x-[80%] translate-y-[-45%]'>
                                                 </div>
                                                 {
-                                                    subLinks.length ? (
-                                                        
+                                                    loading
+                                                    ?(
+                                                        <div className="spinner"></div>
+                                                    ):(
+                                                        subLinks.length ? (
                                                         subLinks.map((subLink, index)=>(
                                                             <Link to={`/catalog/${subLink.name.split(" ").join("-").toLowerCase()}`} key={index}
                                                             className=' hover:bg-richblack-100 gap-3 w-36 flex justify-center p-2 rounded-md items-center'>
                                                                 {subLink.name}
                                                             </Link>
                                                         ))
-                                                        
-                                                    ):(<div></div>)
+                                                        ):(<div></div>)
+                                                    )
                                                 }
 
                                             </div>
@@ -95,7 +106,7 @@ const NavBar = () => {
                                     }
                                 </li>
                             )
-                        })
+                        }))
                     }
                 </ul>
             </nav>
