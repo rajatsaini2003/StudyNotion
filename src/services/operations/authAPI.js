@@ -37,7 +37,8 @@ export function sendOtp(email, navigate){
       navigate("/verify-email")
      } catch (error) {
       console.log("SENDOTP API ERROR............", error)
-      toast.error("Could Not Send OTP")
+      const message=error.response.data.message?error.response.data.message:error;
+      toast.error(message);
      }
      dispatch(setLoading(false));
      toast.dismiss(toastId);
@@ -81,7 +82,8 @@ export function signUp(
       navigate("/login")
      } catch (error) {
       console.log("SIGNUP_API ERROR............", error)
-      toast.error("Could Not Sign up user")
+      const message=error.response.data.message?error.response.data.message:error;
+      toast.error(message);
      }
      dispatch(setLoading(false));
      toast.dismiss(toastId);
@@ -119,7 +121,8 @@ export function login(email, password, navigate){
         navigate("/dashboard/my-profile")
      } catch (error) {
         console.log("LOGIN API ERROR............", error)
-        toast.error("Could Not LOGIN")
+        const message=error.response.data.message?error.response.data.message:error;
+        toast.error(message);
      }
      dispatch(setLoading(false));
      toast.dismiss(toastId);

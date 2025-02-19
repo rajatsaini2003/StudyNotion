@@ -60,7 +60,7 @@ exports.sendOTP = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             success:false,
-            message: "User cannot be registrered. Please try again" + error.message
+            message: "User cannot be registrered. Please try again : " + error.message
         })
     }
 }
