@@ -60,7 +60,7 @@ exports.sendOTP = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             success:false,
-            message: "User cannot be registrered. Please try again : " + error.message
+            message: "OTP can't be sent. Please try again " 
         })
     }
 }
@@ -88,7 +88,6 @@ exports.signUp = async (req, res) => {
         !email || 
         !password || 
         !confirmPassword || 
-        !contactNumber || 
         !otp
         ){
             return res.status(400).json({
@@ -120,7 +119,7 @@ exports.signUp = async (req, res) => {
     if(RecentOtp.length === 0){
         return res.status(400).json({
             success: false,
-            message: "OTP not found"
+            message: "OTP not found regenerate otp"
         });
     }
     else if( otp !== RecentOtp[0].otp){
