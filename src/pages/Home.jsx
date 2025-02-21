@@ -133,7 +133,7 @@ const Home = () => {
          <div className='w-11/12 max-w-maxContent flex items-center justify-center gap-5 mx-auto'>
           <div className='hidden lg:block h-[450px]'></div>
             <div className='flex flex-row gap-7 text-white lg:mt-0 mt-8'>
-              <CTAButton active={true} linkto="/signup</div>">
+              <CTAButton active={true} linkto="/signup">
                   <div className='flex flex-row items-center gap-3'>
                     Explore Full Catalog
                     <FaArrowRight />
