@@ -8,6 +8,7 @@ import OpenRoute from './components/core/Auth/OpenRoute'
 import ForgotPassword from "./pages/ForgotPassword";
 import UpdatePassword from "./pages/UpdatePassword";
 import VerifyEmail from "./pages/VerifyEmail";
+import About from "./pages/About";
 function App() {
   return (
     <div className = "w-screen min-h-screen bg-richblack-900 flex flex-col font-inter ">
@@ -47,6 +48,12 @@ function App() {
                 <OpenRoute>
                   <VerifyEmail/>
                 </OpenRoute>
+              }
+            /> 
+            <Route
+              path="about"
+              element={
+                  <About/>
               }
             /> 
       </Routes>
