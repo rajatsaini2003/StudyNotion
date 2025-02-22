@@ -120,8 +120,8 @@ const About = () => {
         </section>
 
         {/* section 5 */}
-        <section>
-            <LearningGrid/>
+        <section className='mx-auto mt-20 flex w-fit p-6 lg:p-0 lg:w-11/12 max-w-maxContent flex-col justify-between gap-10 text-white'>
+        <LearningGrid />
         </section>
     </div>
   )
