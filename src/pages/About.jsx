@@ -8,6 +8,8 @@ import HighlightText2 from '../components/core/HomePage/HighlightText2'
 import FoundingStory from '../assets/Images/FoundingStory.png'
 import Stats from '../components/core/About/Stats'
 import LearningGrid from '../components/core/About/LearningGrid'
+import ContactForm from '../components/core/About/ContactForm'
+
 const About = () => {
   return (
     <div className=" text-white ">
@@ -122,6 +124,7 @@ const About = () => {
         {/* section 5 */}
         <section className='mx-auto mt-20 flex w-fit p-6 lg:p-0 lg:w-11/12 max-w-maxContent flex-col justify-between gap-10 text-white'>
         <LearningGrid />
+        <ContactForm/>
         </section>
     </div>
   )
