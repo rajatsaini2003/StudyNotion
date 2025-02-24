@@ -26,17 +26,19 @@ const ContactFormCore = () => {
     }
   },[isSubmitSuccessful, reset]);
   return (
-    <form onSubmit={handleSubmit(submitContact)}>
-      <div className='flex flex-col gap-14'>
-        <div className='flex gap-5'>
+    <form 
+    className=' flex flex-col gap-7'
+    onSubmit={handleSubmit(submitContact)}>
+        <div className='flex flex-col gap-5 lg:flex-row'>
           {/* first Name*/}
-          <div>
+          <div className='flex flex-col gap-2 lg:w-[48%]'>
             <label htmlFor='firstname' >First Name</label>
             <input
             type="text"
             name='firstname'
             id='firstname'
             placeholder='Enter first name'
+            className='contact-form-style text-black'
             {...register("firstname",{required:true})}
             />
             {
@@ -49,12 +51,15 @@ const ContactFormCore = () => {
           </div>
 
           {/* last Name*/}
-          <div>
-            <label htmlFor='lastname' >Last Name</label>
+          <div className='flex flex-col gap-2 lg:w-[48%]'>
+            <label className='text-sm' htmlFor='lastname'>
+              Last Name
+            </label>
             <input
             type="text"
             name='lastname'
             id='lastname'
+            className='text-black contact-form-style'
             placeholder='Enter Last name'
             {...register("lastname")}
             />
@@ -62,12 +67,13 @@ const ContactFormCore = () => {
         </div>
 
         {/*email*/}
-        <div>
-          <label htmlFor='email'>Email Address</label>
+        <div className='flex flex-col gap-2'>
+          <label className=' text-sm' htmlFor='email'>Email Address</label>
           <input
           type = 'email'
           name='email'
           id='email'
+          className='text-black contact-form-style'
           placeholder='Enter email address'
           {...register("email",{required:true})}
           />
@@ -81,13 +87,14 @@ const ContactFormCore = () => {
         </div>
 
         {/*Message*/}
-        <div>
-          <label htmlFor='message'>Message</label>
+        <div className='flex flex-col gap-2'>
+          <label className='text-sm' htmlFor='message'>Message</label>
           <textarea 
           name="message" 
           id="message"
           cols="30"
           rows="7"
+          className='contact-form-style'
           placeholder='Enter Your Message'
           {...register("message",{required:true})}
           />
@@ -99,10 +106,11 @@ const ContactFormCore = () => {
             )
           }
         </div>
-        <button type='submit'>
+        <button type='submit'
+          className='rounded-md bg-yellow-50 px-6 py-3 text-center text-[13px] font-bold text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] 
+          transition-all duration-200 hover:scale-95 hover:shadow-none  disabled:bg-richblack-500 sm:text-[16px] '>
           Send Message
         </button>
-      </div>
     </form>
   )
 }
