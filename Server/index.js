@@ -8,6 +8,7 @@ const dotenv = require("dotenv");
 const fileUpload = require("express-fileupload");
 const {cloudinaryConnect} = require('./config/cloudinary')
 
+const contactRoutes = require('./routes/ContactUs')
 const userRoutes= require('./routes/User');
 const paymentRoutes= require('./routes/Payment');
 const courseRoutes= require('./routes/Course');
@@ -38,6 +39,7 @@ cloudinaryConnect();
 
 //routes
 app.use('/api/v1/auth',userRoutes);
+app.use('/api/v1/reach',contactRoutes);
 app.use('/api/v1/profile',profileRoutes);
 app.use('/api/v1/course',courseRoutes);
 app.use('/api/v1/payment',paymentRoutes);

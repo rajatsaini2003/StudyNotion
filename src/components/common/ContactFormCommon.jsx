@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form';
+import { apiConnector } from '../../services/apiconnector';
+import { contactusEndpoint } from '../../services/apis';
+import countrycode from '../../data/countrycode.json'
+
 const ContactFormCore = () => {
   const [loading,setLoading] = useState(false);
   const {
@@ -11,7 +15,16 @@ const ContactFormCore = () => {
   } = useForm();
 
   const submitContact = async(data)=>{
-
+    console.log(data);
+    try {
+      setLoading(true);
+      const res= await apiConnector("POST",contactusEndpoint.CONTACT_US_API,data)
+      console.log("response: ",res);
+      setLoading(false);
+    } catch (error) {
+      console.log("Error: ",error);
+      setLoading(false);
+    }
   }
 
   useEffect(()=> {
@@ -21,9 +34,11 @@ const ContactFormCore = () => {
         firstname: "",
         lastname:"",
         message:"",
-        phoneNo:""
+        phoneNo:"",
+        countrycode:""
       })
     }
+    // eslint-disable-next-line
   },[isSubmitSuccessful, reset]);
   return (
     <form 
@@ -43,8 +58,8 @@ const ContactFormCore = () => {
             />
             {
               errors.firstname && (
-                <span>
-                  Please enter your first name
+                <span className='text-yellow-25 text-xs'>
+                  * Please enter your first name
                 </span>
               )
             }
@@ -79,11 +94,59 @@ const ContactFormCore = () => {
           />
           {
               errors.email && (
-                <span>
-                  Please enter your Email
+                <span className='text-yellow-25 text-xs'>
+                  * Please enter your Email
                 </span>
               )
             }
+        </div>
+        
+        {/*phone no*/}
+        <div className='flex flex-col gap-2'>
+          <label htmlFor='phoneNo'>Phone Number</label>
+          <div className='flex flex-row gap-5'>
+            {/*dropdown */}
+            <div className='flex w-[80px] flex-col gap-2'>
+              <select
+                name='dropdown'
+                id="dropdown"
+                className='contact-form-style'
+                {...register("countrycode", {required:true})}
+              >
+                {
+                  countrycode.map( (element , index) => {
+                     return (
+                      <option key={index} value={element.code}>
+                        {element.code} - {element.country}
+                      </option>
+                      )
+                  } )
+                  }
+              </select>
+            </div>
+            <div className='flex w-[calc(100%-100px)] flex-col gap-2'>
+                   <input
+                            type='number'
+                            name='phonenumber'
+                            id='phonenumber'
+                            placeholder='12345 67890'
+                            className='contact-form-style'
+                            {...register("phoneNo",  
+                            {
+                                required:{value:true, message:"* Please enter Phone Number"},
+                                maxLength: {value:10, message:"* Invalid Phone Number"},
+                                minLength:{value:8, message:"* Invalid Phone Number"} })}
+                    />
+            </div> 
+          </div>
+          {
+            errors.phoneNo && (
+              <span className='text-yellow-25 text-xs'>
+                  {errors.phoneNo.message}
+              </span>
+            )
+          }
+
         </div>
 
         {/*Message*/}
@@ -100,8 +163,8 @@ const ContactFormCore = () => {
           />
           {
             errors.message && (
-              <span>
-                  Please enter your message
+              <span className='text-yellow-25 text-xs '>
+                  * Please enter your message
               </span>
             )
           }
