@@ -43,6 +43,7 @@ export function sendOtp(email, navigate){
   }
 }
 
+
 export function signUp(
   accountType,
   firstName,

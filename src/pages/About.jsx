@@ -9,7 +9,7 @@ import FoundingStory from '../assets/Images/FoundingStory.png'
 import Stats from '../components/core/About/Stats'
 import LearningGrid from '../components/core/About/LearningGrid'
 import ContactForm from '../components/core/About/ContactForm'
-
+import Footer from "../components/common/Footer"
 const About = () => {
   return (
     <div className=" text-white ">
@@ -126,6 +126,17 @@ const About = () => {
         <LearningGrid />
         <ContactForm/>
         </section>
+
+        <section>
+            <div>
+                Reviews From other users
+                {/* <ReviewSlider/> */}
+
+            </div>
+        </section>
+
+        <Footer/>
+
     </div>
   )
 }
