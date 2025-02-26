@@ -11,6 +11,7 @@ import VerifyEmail from "./pages/VerifyEmail";
 import About from "./pages/About";
 import ContactUs from "./pages/ContactUs";
 function App() {
+  console.log("app started");
   return (
     <div className = "w-screen min-h-screen bg-richblack-900 flex flex-col font-inter ">
       <NavBar/>

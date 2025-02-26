@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { apiConnector } from '../../services/apiconnector';
 import { contactusEndpoint } from '../../services/apis';
 import countrycode from '../../data/countrycode.json'
+import {toast} from "react-hot-toast"
 
-const ContactFormCore = () => {
-  const [loading,setLoading] = useState(false);
+const ContactFormCommon = () => {
+  
   const {
     register,
     handleSubmit,
@@ -14,18 +14,27 @@ const ContactFormCore = () => {
     formState: {errors, isSubmitSuccessful}
   } = useForm();
 
-  const submitContact = async(data)=>{
-    console.log(data);
+  const submitContact = async (data) => {
+    //console.log(data);
+    const toastId = toast.loading("Loading...");
     try {
-      setLoading(true);
-      const res= await apiConnector("POST",contactusEndpoint.CONTACT_US_API,data)
-      console.log("response: ",res);
-      setLoading(false);
+      const res = await apiConnector("POST", contactusEndpoint.CONTACT_US_API, data);
+      console.log("Contact us response:", res);
+  
+      if (!res.data.success) {
+        throw new Error(res.data.message);
+      }
+  
+      toast.success("Message Sent Successfully");
+      toast.dismiss(toastId); // Dismiss loading toast after success
     } catch (error) {
-      console.log("Error: ",error);
-      setLoading(false);
+      console.log("SENDOTP API ERROR:", error);
+      const message = error.response?.data?.message || error.message || "Something went wrong";
+      toast.error(message);
+      toast.dismiss(toastId); // Dismiss loading toast after error
     }
-  }
+  };
+  
 
   useEffect(()=> {
     if(isSubmitSuccessful){
@@ -35,7 +44,7 @@ const ContactFormCore = () => {
         lastname:"",
         message:"",
         phoneNo:"",
-        countrycode:""
+        countrycode:"+91"
       })
     }
     // eslint-disable-next-line
@@ -178,4 +187,4 @@ const ContactFormCore = () => {
   )
 }
 
-export default ContactFormCore
+export default ContactFormCommon
