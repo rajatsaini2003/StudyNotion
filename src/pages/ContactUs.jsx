@@ -23,7 +23,7 @@ const ContactUs = () => {
         },
     ]
   return (
-    <div className='text-white lg:px-11'>
+    <div className='text-white '>
         <div className='mx-auto mt-20 flex w-11/12 max-w-maxContent flex-col justify-between gap-10 lg:flex-row'>
             <div className='lg:w-[40%]'>
                 <div className='flex flex-col gap-6 rounded-xl bg-richblack-800 p-4 lg:p-6'>

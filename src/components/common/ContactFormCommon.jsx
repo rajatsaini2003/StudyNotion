@@ -28,7 +28,7 @@ const ContactFormCommon = () => {
       toast.success("Message Sent Successfully");
       toast.dismiss(toastId); // Dismiss loading toast after success
     } catch (error) {
-      console.log("SENDOTP API ERROR:", error);
+      console.log("contact us API ERROR:", error);
       const message = error.response?.data?.message || error.message || "Something went wrong";
       toast.error(message);
       toast.dismiss(toastId); // Dismiss loading toast after error
