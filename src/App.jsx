@@ -64,6 +64,12 @@ function App() {
               <ContactUs/>
             }
             />
+            <Route path="dashboard/my-profile"
+            element={
+              <OpenRoute>
+                {/* <MyProfile/> */}
+              </OpenRoute>
+              }/>
       </Routes>
     </div>
   );
