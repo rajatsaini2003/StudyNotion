@@ -20,10 +20,23 @@ const SideBar = () => {
                 sidebarLinks.map((link,index)=>{
                     if(link.type && user?.accountType !== link.type)return null;
                     return (
-                        <SidebarLink/>
+                        <SidebarLink 
+                        link={link} 
+                        iconName={link.icon}
+                        />
                     )
                 })
             }
+        </div>
+        <div className='mx-auto mt-6 mb-6 h-[1px]' ></div>
+        <div className='flex flex-col '>
+          <SidebarLink
+            link={{name:"Settings",path:"/dashboard/settings"}}
+            iconName="VscSettingGear"
+          />
+
+          
+
         </div>
       </div>
     </div>
