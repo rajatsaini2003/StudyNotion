@@ -38,7 +38,7 @@ const SideBar = () => {
                 })
             }
         </div>
-        <div className='mx-auto mt-6 mb-6 h-[1px] bg-yellow-25' ></div>
+        <div className="mx-auto mt-6 mb-6 h-[1px] w-10/12 bg-richblack-600"></div>
         <div className='flex flex-col '>
           <SidebarLink
             link={{name:"Settings",path:"/dashboard/settings"}}
@@ -59,7 +59,7 @@ const SideBar = () => {
           className='text-sm font-medium text-richblack-300'
           >
             <div className='flex items-center gap-x-2 px-8 py-2 text-white'>
-              <VscSignOut className='text-lg'/>
+              <VscSignOut className='text-lg' />
               <span>Logout</span>
             </div>
 

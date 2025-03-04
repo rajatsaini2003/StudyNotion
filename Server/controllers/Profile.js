@@ -5,45 +5,51 @@ const { uploadFileToCloudinary } = require("../utils/fileUpload");
 
 exports.updateProfile = async (req, res) => {
     try {
-        // get data
-        const {dateOfBirth ="", about ="", contactNumber, gender} = req.body;
+        // Get data from request
+        const { dateOfBirth, about, contactNumber, gender } = req.body;
 
-        //get userID
+        // Get user ID
         const id = req.user.id;
 
-        //validation
-        if(!contactNumber || !gender){
-            return res.status(400).json({
-                success: false,
-                message: "Missing required fields"
-            })
-        }
-
-        //find profile
+        // Find user and get profile ID
         const userDetails = await User.findById(id);
+        if (!userDetails) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
         const profileId = userDetails.additionalDetails;
-        const updatedProfile = await Profile.findByIdAndUpdate(profileId,
-            {
-                dateOfBirth,
-                about,
-                contactNumber,
-                gender
-            },
-            {new: true}
-        )
+
+        // Create update object dynamically (only add fields that are provided)
+        const updateData = {};
+        if (dateOfBirth) updateData.dateOfBirth = new Date(dateOfBirth);
+        if (about) updateData.about = about;
+        if (contactNumber) updateData.contactNumber = contactNumber;
+        if (gender) updateData.gender = gender;
+
+        // Update profile only with provided fields
+        const updatedProfile = await Profile.findByIdAndUpdate(
+            profileId,
+            updateData,
+            { new: true }
+        );
+
         return res.status(200).json({
             success: true,
             message: "Profile updated successfully",
-            updatedProfile
-        })
+            updatedProfile,
+        });
+
     } catch (error) {
         return res.status(500).json({
             success: false,
             message: "Failed to update profile",
-            error: error.message
-        })
+            error: error.message,
+        });
     }
-}
+};
+
 
 exports.deleteProfile = async (req, res) => {
     try {
