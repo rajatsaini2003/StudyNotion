@@ -208,9 +208,11 @@ exports.login = async (req, res) => {
             existingUser.password = undefined;
 
             const options = {
-                expires: new Date(Date.now() + 3*24*60*60*1000),
-                httpOnly:true
-            }
+                expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // Same as token expiry
+                httpOnly: true,
+                secure: true, // Enable in production with HTTPS
+                sameSite: "Strict",
+            };
 
             return res.cookie("token", token, options).status(200).json({
                 success:true,

@@ -6,7 +6,7 @@ const { uploadFileToCloudinary } = require("../utils/fileUpload");
 exports.updateProfile = async (req, res) => {
     try {
         // Get data from request
-        const { dateOfBirth, about, contactNumber, gender } = req.body;
+        const {lastName,firstName, dateOfBirth, about, contactNumber, gender } = req.body;
 
         // Get user ID
         const id = req.user.id;
@@ -19,27 +19,16 @@ exports.updateProfile = async (req, res) => {
                 message: "User not found",
             });
         }
+        //const userDetails = await User.findById(userId);
         const profileId = userDetails.additionalDetails;
 
-        // Create update object dynamically (only add fields that are provided)
-        const updateData = {};
-        if (dateOfBirth) updateData.dateOfBirth = new Date(dateOfBirth);
-        if (about) updateData.about = about;
-        if (contactNumber) updateData.contactNumber = contactNumber;
-        if (gender) updateData.gender = gender;
-
-        // Update profile only with provided fields
-        const updatedProfile = await Profile.findByIdAndUpdate(
-            profileId,
-            updateData,
-            { new: true }
-        );
-
+        const updatedProfile = await Profile.findByIdAndUpdate(profileId, {dateOfBirth, gender, about, contactNumber}, {new:true});
+        const updatedUserDetails = await User.findByIdAndUpdate(id,{lastName,firstName},{new:true}).populate("additionalDetails").exec();
         return res.status(200).json({
-            success: true,
-            message: "Profile updated successfully",
-            updatedProfile,
-        });
+            success:true,
+            message:'Profile updated successfully',
+            updatedUserDetails
+        })   
 
     } catch (error) {
         return res.status(500).json({
@@ -138,10 +127,10 @@ exports.getAllUserDetails = async (req, res) => {
 
 exports.updateProfilePicture = async (req,res) =>{
     try {
-        console.log("here............");
+        //console.log("here............");
         const profilePicture = req.files.displayPicture;
         const userId = req.user.id;
-        console.log("userId: " + userId);
+        //console.log("userId: " + userId);
         const image = await uploadFileToCloudinary(
             profilePicture,
             process.env.FOLDER_NAME,

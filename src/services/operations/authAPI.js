@@ -90,7 +90,7 @@ export function signUp(
 
 export function login(email, password, navigate){
   return async (dispatch) => {
-    console.log(email, password)
+    //console.log(email)
      const toastId = toast.loading("Loading...")
      dispatch(setLoading(true));
 
@@ -102,7 +102,7 @@ export function login(email, password, navigate){
 
         console.log("LOGIN API RESPONSE............", response)
 
-        console.log(response.data.success)
+        //console.log(response.data.success)
 
         if(!response.data.success){
             throw new Error(response.data.message)
