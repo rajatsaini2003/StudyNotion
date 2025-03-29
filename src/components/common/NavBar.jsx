@@ -11,10 +11,14 @@ import { categories } from '../../services/apis'
 import { IoIosArrowDropdown } from 'react-icons/io'
 import { useDispatch } from 'react-redux'
 import { setLoading } from '../../slices/authSlice'
+import { logout } from '../../services/operations/authAPI'
+import { useNavigate } from 'react-router-dom'
 const NavBar = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const {token}=useSelector((state)=>state.auth);
     const {user}=useSelector((state)=>state.profile);
+    
     const {totalItems} = useSelector((state)=>state.cart);
     const {loading} = useSelector((state)=>state.auth);
     const [subLinks, setSubLinks] = useState([]);
@@ -42,6 +46,12 @@ const NavBar = () => {
     useEffect(() => {
         fetchCategories();
         // eslint-disable-next-line
+        if (new Date(user?.tokenExpiresAt).getTime() < Date.now()) {
+            dispatch(logout(navigate));
+        }
+        else{
+            console.log("token ok")
+        }
     }, []);
 
     const location = useLocation();

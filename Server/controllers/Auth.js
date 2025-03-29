@@ -206,9 +206,10 @@ exports.login = async (req, res) => {
             existingUser.toObject();
             existingUser.token = token;
             existingUser.password = undefined;
-
+            existingUser.tokenExpiresAt =  new Date(Date.now() +  24 * 60 * 60 * 1000)
+            console.log(existingUser)
             const options = {
-                expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // Same as token expiry
+                expires: new Date(Date.now() +  24 * 60 * 60 * 1000), // Same as token expiry
                 httpOnly: true,
                 secure: true, // Enable in production with HTTPS
                 sameSite: "Strict",

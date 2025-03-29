@@ -24,6 +24,8 @@ exports.updateProfile = async (req, res) => {
 
         const updatedProfile = await Profile.findByIdAndUpdate(profileId, {dateOfBirth, gender, about, contactNumber}, {new:true});
         const updatedUserDetails = await User.findByIdAndUpdate(id,{lastName,firstName},{new:true}).populate("additionalDetails").exec();
+        updatedUserDetails.password = undefined;
+        //console.log(updatedUserDetails);
         return res.status(200).json({
             success:true,
             message:'Profile updated successfully',

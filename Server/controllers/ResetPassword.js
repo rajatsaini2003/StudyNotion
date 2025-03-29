@@ -58,7 +58,7 @@ exports.resetPassword = async(req, res) => {
         const {password, confirmPassword, token} = req.body;
 
         //validation
-        if(password != confirmPassword){
+        if(password !== confirmPassword){
             return res.status(400).json({
                 success: false,
                 message: "Passwords do not match"
@@ -78,6 +78,11 @@ exports.resetPassword = async(req, res) => {
         
         //token time check
         if(userDetails.resetPasswordExpires < Date.now()){
+            await User.findOneAndUpdate(
+                {token: token},// Use token to find the user
+                {resetPasswordExpires:null }, // remove expired token
+                { new: true } // Return the updated document
+            );
             return res.status(403).json({
                 success: false,
                 message: "Token expired generate new Reset password link"
@@ -90,7 +95,7 @@ exports.resetPassword = async(req, res) => {
         //update new hashed password
         await User.findOneAndUpdate(
             {token: token},// Use token to find the user
-            { password: hashedPassword }, // Update password
+            { password: hashedPassword,resetPasswordExpires:null }, // Update password
             { new: true } // Return the updated document
         );
         
