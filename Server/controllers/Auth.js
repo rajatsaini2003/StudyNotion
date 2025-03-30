@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const Profile = require('../models/Profile');
 const JWT = require('jsonwebtoken');
 const mailSender = require("../utils/mailSender");
-const { passwordUpdated } = require("../mail/templates/passwordUpdate");
+const  passwordUpdated  = require("../mail/templates/passwordUpdate");
 require('dotenv').config();
 
 // send otp
@@ -96,7 +96,7 @@ exports.signUp = async (req, res) => {
             });
         }
 
-
+    //console.log(req.body)
     // 2 password match
     if(password !== confirmPassword){
         return res.status(400).json({
@@ -132,8 +132,7 @@ exports.signUp = async (req, res) => {
     //Hash Password
     const hashedPassword = await bcrypt.hash(password, 10);
     //create entry in db
-    let approved = "";
-	approved === "Instructor" ? (approved = false) : (approved = true);
+    let approved = accountType === "Instructor" ?  false : true;
 
     const profileDetails = await Profile.create({
         gender:null,
@@ -207,7 +206,7 @@ exports.login = async (req, res) => {
             existingUser.token = token;
             existingUser.password = undefined;
             existingUser.tokenExpiresAt =  new Date(Date.now() +  24 * 60 * 60 * 1000)
-            console.log(existingUser)
+            //console.log(existingUser)
             const options = {
                 expires: new Date(Date.now() +  24 * 60 * 60 * 1000), // Same as token expiry
                 httpOnly: true,
@@ -244,8 +243,8 @@ exports.changePassword = async (req, res) => {
 		const userDetails = await User.findById(req.user.id);
 
 		// Get old password, new password, and confirm new password from req.body
-		const { oldPassword, newPassword } = req.body;
-
+		const { oldPassword, newPassword,confirmnewPassword } = req.body;
+        //console.log(oldPassword,newPassword,confirmnewPassword)
 		// Validate old password
 		const isPasswordMatch = await bcrypt.compare(
 			oldPassword,
@@ -256,6 +255,18 @@ exports.changePassword = async (req, res) => {
 			return res
 				.status(401)
 				.json({ success: false, message: "The password is incorrect" });
+		}
+        const isPasswordSame = await bcrypt.compare(
+			newPassword,
+			userDetails.password
+		);
+        // console.log(newPassword,oldPassword)
+        // console.log("isPasswordSame",isPasswordSame)
+		if (isPasswordSame===true) {
+			// If old password does not match, return a 401 (Unauthorized) error
+			return res
+				.status(401)
+				.json({ success: false, message: "Your new Password can't be same as old one!" });
 		}
 
 		// Match new password and confirm new password
@@ -278,13 +289,12 @@ exports.changePassword = async (req, res) => {
 		// Send notification email
 		try {
 			const emailResponse = await mailSender(
-				updatedUserDetails.email,
-				passwordUpdated(
-					updatedUserDetails.email,
-					`Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
+                updatedUserDetails.email,
+                "Your Password Has Been Changed",				
+				passwordUpdated(updatedUserDetails.email,updatedUserDetails.firstName
 				)
 			);
-			console.log("Email sent successfully:", emailResponse.response);
+			//console.log("Email sent successfully:", emailResponse.response);
 		} catch (error) {
 			// If there's an error sending the email, log the error and return a 500 (Internal Server Error) error
 			console.error("Error occurred while sending email:", error);

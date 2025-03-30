@@ -17,8 +17,8 @@ const EditProfile = () => {
   } = useForm();
   const submitProfileForm = async(data)=>{
     try {
-      console.log((user?.additionalDetails?.dateOfBirth));
-      console.log(data);
+      //console.log((user?.additionalDetails?.dateOfBirth));
+      //console.log(data);
       dispatch(updateProfile(token,data));
     } catch (error) {
       console.log("Error : ",error.message);

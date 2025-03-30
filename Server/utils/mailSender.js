@@ -20,11 +20,7 @@ const mailSender =async(email, title, body) => {
         return info;
         
     } catch (error) {
-        return res.status(400).json({
-            success:false,
-            message:"something went wrong sending email",
-            "error":error.message,
-        })
+        console.log("Error in mailSender", error.message);
     }
 }
 

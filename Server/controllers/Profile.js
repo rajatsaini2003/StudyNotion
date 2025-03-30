@@ -46,7 +46,7 @@ exports.deleteProfile = async (req, res) => {
     try {
         //get data
         const id = req.user.id;
-        console.log(id);
+        //console.log(id);
         //validation
         const userDetails = await User.findById(id);
         // if(!userDetails){

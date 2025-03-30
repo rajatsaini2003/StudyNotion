@@ -19,7 +19,7 @@ const ContactFormCommon = () => {
     const toastId = toast.loading("Loading...");
     try {
       const res = await apiConnector("POST", contactusEndpoint.CONTACT_US_API, data);
-      console.log("Contact us response:", res);
+      //console.log("Contact us response:", res);
   
       if (!res.data.success) {
         throw new Error(res.data.message);

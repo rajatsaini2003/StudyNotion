@@ -14,7 +14,7 @@ const OTPSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now(),
-        expires: 5*60,
+        expires: 2*60*1000,
     }
     
 });
@@ -25,7 +25,7 @@ async function sendVerificationEmail(email,otp){
         const mailResponse = await mailSender(email,
 			"Verification Email",
 			emailTemplate(otp))
-        console.log("Email sent Successfully: ", mailResponse.response);
+        //console.log("Email sent Successfully: ", mailResponse.response);
     } catch (error) {
         console.log("error occured while sending mails: ", error);
         throw error;

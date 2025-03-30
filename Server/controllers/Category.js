@@ -55,7 +55,7 @@ exports.categoryPageDetails = async (req, res) => {
         const selectedCategory = await Category.findById(categoryId)
                                             .populate("course")
                                             .exec();
-        console.log(selectedCategory);
+        //console.log(selectedCategory);
         if(!selectedCategory){
             return res.status(404).json({
                 success: false,
@@ -65,7 +65,7 @@ exports.categoryPageDetails = async (req, res) => {
 
         //handle the case when there are no course
         if(selectedCategory.course.length === 0){
-            console.log("No Course found for selected category");
+            //console.log("No Course found for selected category");
             return res.status(200).json({
                 success: true,
                 message: "No Course found for selected category"

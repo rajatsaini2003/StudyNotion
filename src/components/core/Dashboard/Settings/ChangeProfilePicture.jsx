@@ -43,7 +43,7 @@ export default function ChangeProfilePicture() {
       setLoading(true)
       const formData = new FormData()
       formData.append("displayPicture", imageFile)
-       console.log("formdata", formData)
+      console.log("formdata", formData)
       dispatch(updateDisplayPicture(token, formData)).then(() => {
         setLoading(false)
       })
@@ -58,7 +58,7 @@ export default function ChangeProfilePicture() {
     }
   }, [imageFile])
   return (
-    <>
+    <div>
       <div className="flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12 text-richblack-5">
         <div className="flex items-center gap-x-4">
           <img
@@ -95,6 +95,6 @@ export default function ChangeProfilePicture() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
