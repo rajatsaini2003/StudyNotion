@@ -45,17 +45,19 @@ const Home = () => {
             Book a Demo
           </CTAButton>
         </div>
-        
-        <div className="relative mx-3 my-14 shadow-[50px_-30px_90px_-10px_rgba(59,130,246,0.5)]"> 
-          <div className="absolute right-[-20px] bottom-[-20px]
-           bg-white w-full h-full rounded">
-          </div>
-          <div className="relative">
-            <video muted loop autoPlay>
-              <source src={Banner} type="video/mp4" />
-            </video>
+        <div className='w-8/12'>
+          <div className="relative mx-3 my-14 shadow-[50px_-30px_90px_-10px_rgba(59,130,246,0.5)]"> 
+            <div className="absolute right-[-20px] bottom-[-20px]
+            bg-white w-full h-full rounded">
+            </div>
+            <div className="relative">
+              <video muted loop autoPlay>
+                <source src={Banner} type="video/mp4" />
+              </video>
+            </div>
           </div>
         </div>
+        
 
       {/* codesection 1*/}
       <div>
