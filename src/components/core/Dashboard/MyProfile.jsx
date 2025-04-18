@@ -7,7 +7,7 @@ import IconBtn from '../../common/IconButton'
 const MyProfile = () => {
     const {user} = useSelector((state)=> state.profile)
     const navigate = useNavigate();
-    
+        
   return (
     <>
     <h1 className="mb-14 text-3xl font-medium text-richblack-5">
