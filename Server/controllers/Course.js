@@ -10,90 +10,70 @@ const { convertSecondsToDuration } = require("../utils/secToDuration")
 
 
 // createCourse handler function
-exports.createCourse = async (req, res) => {
-    try {
-        
-        // fetch data
-        const {courseName, courseDescription, whatYouWillLearn, price, category, tag, instructions} = req.body;
-        //get thumbnail
-        const thumbnail = req.files.thumbnailImage;
-        //validation
-        if(!courseName || !courseDescription || !whatYouWillLearn 
-            || !price || !category || !instructions || !tag
-        ){
-            return res.status(400).json({
-                success: false,
-                message: "All fields are required"
-            });
-        }
+exports.createCourse = async (req,res) => {
+  try {
+      const{courseName, courseDescription, whatWillYouLearn, price, category,tags,status, instructions} = req.body;
 
-        // check userId
-        const userId = req.user.id;
-        const InstructorDetails =  await User.findById(userId);
-        console.log("instructor Details: ", InstructorDetails)
-        // todo: check if user and instructor id are the same or different
-        if(!InstructorDetails) return res.status(401).json({
-            success: false,
-            message: "Instructor not found"
-        });
+      const thumbnail = req.files.thumbnailImage;
+      //console.log("Thumbnail in course creation is", thumbnail)
+      if(!courseName || !courseDescription || !whatWillYouLearn || !price || !category || !thumbnail || !status || !instructions) {
+          return res.status(400).json({
+              success:false,
+              message:'All fields are required',
+          });
+      }
 
-        // check given category is valid or not
-        const categoryDetails = await Category.findOne({_id:category});
-        if(!categoryDetails){
-            return res.status(400).json({
-                success: false,
-                message: "Invalid category"
-            });
-        }
-        // upload thumbnail to cloudinary
-        const thumbnailImage = await uploadFileToCloudinary(thumbnail, process.env.FOLDER_NAME);
+      const instructorId = req.user.id;
 
-        //create an entry for new course
-        const newCourse =  await Course.create({
-            courseName:courseName, 
-            description:courseDescription,
-            instructor:InstructorDetails._id,
-            whatYouWillLearn:whatYouWillLearn,
-            price,
-            category:categoryDetails._id,
-            thumbnail:thumbnailImage.secure_url,
-            tag,
-            instructions
-        })
-        await User.findByIdAndUpdate({
-            _id:InstructorDetails._id},
-            {
-                $spush: {
-                    courses: newCourse._id
-                }
-            },
-            {new:true}
-        )
+      const categoryDetails = await Category.findById(category);
+      if(!categoryDetails) {
+          return res.status(404).json({
+              success:false,
+              message:'Category Details not found',
+          });
+      }
 
-        // update the category schema
-        await Category.findByIdAndUpdate(categoryDetails._id, {
-            $push: {
-                course: newCourse._id
-            }
-        }, {new: true})
+      const thumbnailImage = await uploadFileToCloudinary(thumbnail,process.env.FOLDER_NAME);
 
-        //return response
-        return res.status(200).json({
-            success: true,
-            message: "course created successfully",
-            data: newCourse
-        })
+      const newCourse = await Course.create({
+          courseName,
+          description:courseDescription,
+          whatWillYouLearn,
+          price,
+          thumbnail:thumbnailImage.secure_url,
+          category,
+          instructor:instructorId,
+          tags,
+          status,
+          instructions
+      })
 
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: "fail to create course",
-            error: error.message
-        })
-        
-    }
+      await Category.findByIdAndUpdate(category,
+          {
+              $push: {
+                  course: newCourse._id
+              }
+          })
+
+      await User.findByIdAndUpdate(instructorId, {
+          $push: {
+              courses: newCourse._id
+          }})
+          
+      return res.status(200).json({
+          success:true,
+          message:'Course created successfully',
+          newCourse
+      })    
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+          success:false,
+          message:'Failed to create Course',
+          error: error.message,
+      })
+  }
 }
-
 exports.showAllCourse = async (req, res) => {
     try {
         // TODO change the below statement incrementally
@@ -163,73 +143,73 @@ exports.getCourseDetails = async (req, res) =>{
 }
 
 exports.editCourse = async (req, res) => {
-    try {
-      const { courseId } = req.body
-      const updates = req.body
-      const course = await Course.findById(courseId)
-  
-      if (!course) {
-        return res.status(404).json({ error: "Course not found" })
-      }
-  
-      // If Thumbnail Image is found, update it
-      if (req.files) {
-        console.log("thumbnail update")
-        const thumbnail = req.files.thumbnailImage
-        const thumbnailImage = await uploadFileToCloudinary(
-          thumbnail,
-          process.env.FOLDER_NAME
-        )
-        course.thumbnail = thumbnailImage.secure_url
-      }
-  
-      // Update only the fields that are present in the request body
-      for (const key in updates) {
-        if (updates.hasOwnProperty(key)) {
-          course[key] = updates[key]
-          // if (key === "tag" || key === "instructions") {
-          //   course[key] = JSON.parse(updates[key])
-          // } else {
-          //   course[key] = updates[key]
-          // }
-        }
-      }
-  
-      await course.save()
-  
-      const updatedCourse = await Course.findOne({
-        _id: courseId,
-      })
-        .populate({
-          path: "instructor",
-          populate: {
-            path: "additionalDetails", 
-          },
-        })
-        .populate("category")
-        .populate("ratingAndReviews")
-        .populate({
-          path: "courseContent",
-          populate: {
-            path: "subSection",
-          },
-        })
-        .exec()
-  
-      res.json({
-        success: true,
-        message: "Course updated successfully",
-        data: updatedCourse,
-      })
-    } catch (error) {
-      console.error(error)
-      res.status(500).json({
-        success: false,
-        message: "Internal server error",
-        error: error.message,
-      })
+  try {
+    const { courseId } = req.body
+    const updates = req.body
+    const course = await Course.findById(courseId)
+
+    if (!course) {
+      return res.status(404).json({ error: "Course not found" })
     }
+
+    // If Thumbnail Image is found, update it
+    if (req.files) {
+      console.log("thumbnail update")
+      const thumbnail = req.files.thumbnailImage
+      const thumbnailImage = await uploadFileToCloudinary(
+        thumbnail,
+        process.env.FOLDER_NAME
+      )
+      course.thumbnail = thumbnailImage.secure_url
+    }
+
+    // Update only the fields that are present in the request body
+    for (const key in updates) {
+      if (updates.hasOwnProperty(key)) {
+        course[key] = updates[key]
+        // if (key === "tag" || key === "instructions") {
+        //   course[key] = JSON.parse(updates[key])
+        // } else {
+        //   course[key] = updates[key]
+        // }
+      }
+    }
+
+    await course.save()
+
+    const updatedCourse = await Course.findOne({
+      _id: courseId,
+    })
+      .populate({
+        path: "instructor",
+        populate: {
+          path: "additionalDetails", 
+        },
+      })
+      .populate("category")
+      .populate("ratingAndReview")
+      .populate({
+        path: "courseContent",
+        populate: {
+          path: "subSection",
+        },
+      })
+      .exec()
+
+    res.json({
+      success: true,
+      message: "Course updated successfully",
+      data: updatedCourse,
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    })
   }
+}
 
 exports.getFullCourseDetails = async (req, res) => {
     try {
@@ -245,7 +225,7 @@ exports.getFullCourseDetails = async (req, res) => {
           },
         })
         .populate("category")
-        .populate("ratingAndReviews")
+        .populate("ratingAndReview")
         .populate({
           path: "courseContent",
           populate: {

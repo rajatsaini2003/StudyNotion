@@ -74,7 +74,7 @@ export const fetchCourseCategories = async () => {
     if (!response?.data?.success) {
       throw new Error("Could Not Fetch Course Categories")
     }
-    result = response?.data.data
+    result = response?.data.allCategory
     
   } catch (error) {
     console.log("COURSE_CATEGORY_API API ERROR............", error)
@@ -142,7 +142,8 @@ export const createSection = async (data, token) => {
       throw new Error("Could Not Create Section")
     }
     toast.success("Course Section Created")
-    result = response?.data?.updatedCourse
+    console.log("newCourse", response)
+    result = response?.data?.data
   } catch (error) {
     console.log("CREATE SECTION API ERROR............", error)
     toast.error(error.message)
