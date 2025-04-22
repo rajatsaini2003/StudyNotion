@@ -22,9 +22,11 @@ const RenderSteps = () => {
     ]
   return (
     <>
-        <div className="relative mb-2 flex w-full justify-center">
+        <div className="relative mb-2 flex w-full justify-center ">
             {steps.map((item)=> (
-                < div key={item.id}>  
+                < div 
+                className='flex'
+                key={item.id}>  
                 {/* Step Circle */}
                     <div className="flex flex-col items-center " >
                         <button
@@ -42,12 +44,13 @@ const RenderSteps = () => {
                     </div>
                 {/* Dotted Line */}
                     {item.id !== steps.length && (
-                        <>
-                            <div key={item.id}
-                            className={`h-[calc(34px/2)] w-[33%]  border-dashed border-b-2 
-                            ${step > item.id  ? "border-yellow-50" : "border-richblack-500"}`}
+                        <div className="flex items-center justify-center">
+                            <div
+                                className={`h-[2px] w-[130px] ${
+                                    step > item.id ? "bg-yellow-50" : "bg-richblack-700"
+                                }`}
                             ></div>
-                        </>
+                        </div>
                     )}
                 </div>
             ))}
@@ -58,10 +61,8 @@ const RenderSteps = () => {
         {steps.map((item) => (
           <div key={item.id}>
             <div
-              className="flex min-w-[130px] flex-col items-center gap-y-2"
-              
+              className="flex min-w-[130px] flex-col items-center gap-y-2" 
             >
-              
               <p
                 className={`text-sm ${
                   step >= item.id ? "text-richblack-5" : "text-richblack-500"

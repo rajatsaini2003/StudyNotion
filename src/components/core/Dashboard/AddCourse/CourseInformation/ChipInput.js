@@ -15,7 +15,7 @@ const ChipInput = ({
     const [chips, setChips] = useState([])
 
     useEffect(() => {
-      if(editCourse) {
+      if(course?.tags) {
         setChips(JSON.parse(course?.tags))
       }
       register(name, {required:true, validate: (value)=> value.length > 0})
