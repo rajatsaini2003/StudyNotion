@@ -50,7 +50,7 @@ const CourseInformationForm = () => {
     if (editCourse) {
         // console.log("data populated", editCourse)
         setValue("courseTitle", course.courseName)
-        setValue("courseShortDesc", course.description)
+        setValue("courseShortDesc", course.courseDescription)
         setValue("coursePrice", course.price)
         setValue("courseTags", course.tags)
         setValue("courseBenefits", course.whatWillYouLearn)
