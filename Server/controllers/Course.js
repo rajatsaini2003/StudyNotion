@@ -318,13 +318,13 @@ exports.getFullCourseDetails = async (req, res) => {
   exports.deleteCourse = async (req, res) => {
     try {
       const { courseId } = req.body
-  
+      const instructorId = req.user.id
       // Find the course
       const course = await Course.findById(courseId)
       if (!course) {
         return res.status(404).json({ message: "Course not found" })
       }
-  
+      
       // Unenroll students from the course
       const studentsEnrolled = course.studentsEnrolled
       for (const studentId of studentsEnrolled) {
@@ -349,7 +349,10 @@ exports.getFullCourseDetails = async (req, res) => {
         await Section.findByIdAndDelete(sectionId)
       }
       
-
+      // remove course from instructor's courses
+      await User.findByIdAndUpdate(instructorId, {
+        $pull: { courses: courseId },
+      })
       // Delete the course
       await Course.findByIdAndDelete(courseId)
   

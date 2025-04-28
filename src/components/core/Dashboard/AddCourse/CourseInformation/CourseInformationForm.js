@@ -59,7 +59,6 @@ const CourseInformationForm = () => {
         setValue("courseImage", course.thumbnail)
       }
       getCategories()
-      
     }, [])
     
     const isFormUpdated = () => {
@@ -136,7 +135,7 @@ const CourseInformationForm = () => {
         formData.append("courseName", data.courseTitle)
         formData.append("courseDescription", data.courseShortDesc)
         formData.append("price", data.coursePrice)
-        formData.append("tags", JSON.stringify(data.courseTags))
+        formData.append("tags", JSON.stringify(data.courseTags)) 
         formData.append("whatWillYouLearn", data.courseBenefits)
         formData.append("category", data.courseCategory)
         formData.append("status", COURSE_STATUS.DRAFT)
