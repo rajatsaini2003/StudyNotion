@@ -188,7 +188,7 @@ export const updateSection = async (data, token) => {
       throw new Error("Could Not Update Section")
     }
     toast.success("Course Section Updated")
-    result = response?.data?.updatedCourse
+    result = response?.data?.data
   } catch (error) {
     console.log("UPDATE SECTION API ERROR............", error)
     toast.error(error.message)

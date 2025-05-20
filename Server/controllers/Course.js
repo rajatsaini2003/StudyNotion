@@ -12,11 +12,11 @@ const { convertSecondsToDuration } = require("../utils/secToDuration")
 // createCourse handler function
 exports.createCourse = async (req,res) => {
   try {
-      const{courseName, courseDescription, whatWillYouLearn, price, category,tags,status, instructions} = req.body;
+      const{courseName, courseDescription, whatYouWillLearn, price, category,tags,status, instructions} = req.body;
 
       const thumbnail = req.files.thumbnailImage;
       //console.log("Thumbnail in course creation is", thumbnail)
-      if(!courseName || !courseDescription || !whatWillYouLearn || !price || !category || !thumbnail || !status || !instructions) {
+      if(!courseName || !courseDescription || !whatYouWillLearn || !price || !category || !thumbnail || !status || !instructions) {
           return res.status(400).json({
               success:false,
               message:'All fields are required',
@@ -38,16 +38,16 @@ exports.createCourse = async (req,res) => {
       const newCourse = await Course.create({
           courseName,
           description:courseDescription,
-          whatWillYouLearn,
+          whatYouWillLearn:whatYouWillLearn,
           price,
           thumbnail:thumbnailImage.secure_url,
           category,
           instructor:instructorId,
-          tags,
+          tag:tags,
           status,
           instructions
       })
-
+      console.log("New Course Created", whatYouWillLearn)
       await Category.findByIdAndUpdate(category,
           {
               $push: {
@@ -59,7 +59,7 @@ exports.createCourse = async (req,res) => {
           $push: {
               courses: newCourse._id
           }})
-          
+          console.log("New Course Created", newCourse)
       return res.status(200).json({
           success:true,
           message:'Course created successfully',

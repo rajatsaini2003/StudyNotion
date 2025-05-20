@@ -16,7 +16,11 @@ const RequirementField = ({
     useEffect(() => { 
       if(editCourse){
         // console.log("In requirements field, 1st render, editCourse=true course is",course)
-        setRequirementsList(JSON.parse(course?.instructions));
+        if(Array.isArray(course.instructions)) {
+          setRequirementsList(course.instructions);
+        } else {
+          setRequirementsList([]);
+        }
       }
       register(name, {required:true, validate: (value)=> value.length > 0 })
       

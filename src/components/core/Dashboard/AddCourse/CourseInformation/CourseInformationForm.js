@@ -38,22 +38,22 @@ const CourseInformationForm = () => {
         setLoading(true);
 
         const categories = await fetchCourseCategories()
-         console.log("categories respnse is",categories)
+         //console.log("categories respnse is",categories)
         if (categories.length > 0) {
-             console.log("categories", categories)
+             //console.log("categories", categories)
             setCourseCategories(categories)
           }
           setLoading(false)
       }
-      
-       // if form is in edit mode
-    if (editCourse) {
+      // if form is in edit mode
+      if (editCourse) {
         // console.log("data populated", editCourse)
+        //console.log(course);
         setValue("courseTitle", course.courseName)
-        setValue("courseShortDesc", course.courseDescription)
+        setValue("courseShortDesc", course.description)
         setValue("coursePrice", course.price)
-        setValue("courseTags", course.tags)
-        setValue("courseBenefits", course.whatWillYouLearn)
+        setValue("courseTags", course.tag)
+        setValue("courseBenefits", course.whatYouWillLearn)
         setValue("courseCategory", course.category)
         setValue("courseRequirements", course.instructions)
         setValue("courseImage", course.thumbnail)
@@ -66,10 +66,10 @@ const CourseInformationForm = () => {
 
         if(
             currentValues.courseTitle !== course.courseName ||
-            currentValues.courseShortDesc !== course.courseDescription ||
+            currentValues.courseShortDesc !== course.description ||
             currentValues.coursePrice !== course.price ||
-            currentValues.courseTags.toString() !== course.tags.toString() ||
-            currentValues.courseBenefits !== course.whatWillYouLearn ||
+            currentValues.courseTags.toString() !== course.tag.toString() ||
+            currentValues.courseBenefits !== course.whatYouWillLearn ||
             currentValues.courseCategory._id !== course.category._id ||
             currentValues.courseRequirements.toString() !==
             course.instructions.toString() ||
@@ -95,23 +95,17 @@ const CourseInformationForm = () => {
                 if (currentValues.coursePrice !== course.price) {
                 formData.append("price", data.coursePrice)
                 }
-                if (currentValues.courseTags.toString() !== course.tags.toString()) {
-                formData.append("tags", JSON.stringify(data.courseTags))
+                if (currentValues.courseTags.toString() !== course.tag.toString()) {
+                  data.courseTags.forEach(tg => formData.append("tags", tg));
                 }
-                if (currentValues.courseBenefits !== course.whatWillYouLearn) {
-                formData.append("whatWillYouLearn", data.courseBenefits)
+                if (currentValues.courseBenefits !== course.whatYouWillLearn) {
+                formData.append("whatYouWillLearn", data.courseBenefits)
                 }
-                if (currentValues.courseCategory._id !== course.category._id) {
+                if (currentValues.courseCategory !== course.category._id) {
                 formData.append("category", data.courseCategory)
                 }
-                if (
-                currentValues.courseRequirements.toString() !==
-                course.instructions.toString()
-                ) {
-                formData.append(
-                    "instructions",
-                    JSON.stringify(data.courseRequirements)
-                )
+                if (currentValues.courseRequirements.toString() !== course.instructions.toString()) {
+                  data.courseRequirements.forEach(inst => formData.append("instructions", inst));
                 }
                 if (currentValues.courseImage !== course.thumbnail) {
                 formData.append("thumbnailImage", data.courseImage)
@@ -135,17 +129,17 @@ const CourseInformationForm = () => {
         formData.append("courseName", data.courseTitle)
         formData.append("courseDescription", data.courseShortDesc)
         formData.append("price", data.coursePrice)
-        formData.append("tags", JSON.stringify(data.courseTags)) 
-        formData.append("whatWillYouLearn", data.courseBenefits)
+        data.courseRequirements.forEach(inst => formData.append("instructions", inst)); 
+        formData.append("whatYouWillLearn", data.courseBenefits)
         formData.append("category", data.courseCategory)
         formData.append("status", COURSE_STATUS.DRAFT)
-        formData.append("instructions", JSON.stringify(data.courseRequirements))
+        data.courseTags.forEach(tg => formData.append("tags", tg));
         formData.append("thumbnailImage", data.courseImage)
 
         setLoading(true);
-
         const result = await addCourseDetails(formData, token);
         if (result) {
+          //console.log("Form data is", result)
             dispatch(setStep(2));
             dispatch(setCourse(result))
         }
@@ -198,18 +192,18 @@ const CourseInformationForm = () => {
           Course Price <sup className="text-pink-200">*</sup>
         </label>
         <div className="relative">
-          <input
-            id="coursePrice"
-            placeholder="Enter Course Price"
-            {...register("coursePrice", {
-              required: true,
-              valueAsNumber: true,
-              pattern: {
-                value: /^(0|[1-9]\d*)(\.\d+)?$/,
-              },
-            })}
-            className="form-style w-full !pl-12"
-          />
+        <input
+          id="coursePrice"
+          type="number"
+          step="0.01"           // allows decimals with 2 places
+          min="0"
+          placeholder="Enter Course Price"
+          {...register("coursePrice", {
+            required: true,
+            valueAsNumber: true,
+          })}
+          className="form-style w-full !pl-12"
+        />
           <HiOutlineCurrencyRupee className="absolute left-3 top-1/2 inline-block -translate-y-1/2 text-2xl text-richblack-400" />
         </div>
         {errors.coursePrice && (

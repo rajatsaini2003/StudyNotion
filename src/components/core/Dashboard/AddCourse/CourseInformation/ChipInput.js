@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux'
 import { GrFormClose } from "react-icons/gr"
 const ChipInput = ({
-    label, name,
+  label, name,
   placeholder,
   register,
   errors,
@@ -15,8 +15,13 @@ const ChipInput = ({
     const [chips, setChips] = useState([])
 
     useEffect(() => {
-      if(course?.tags) {
-        setChips(JSON.parse(course?.tags))
+      if(course?.tag) {
+        if(Array.isArray(course.tag)) {
+          setChips(course.tag);
+        } else {
+          setChips([]);
+        }
+        
       }
       register(name, {required:true, validate: (value)=> value.length > 0})
 
