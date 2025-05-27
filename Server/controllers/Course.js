@@ -47,7 +47,7 @@ exports.createCourse = async (req,res) => {
           status,
           instructions
       })
-      console.log("New Course Created", whatYouWillLearn)
+      //console.log("New Course Created", whatYouWillLearn)
       await Category.findByIdAndUpdate(category,
           {
               $push: {
@@ -59,7 +59,7 @@ exports.createCourse = async (req,res) => {
           $push: {
               courses: newCourse._id
           }})
-          console.log("New Course Created", newCourse)
+          //console.log("New Course Created", newCourse)
       return res.status(200).json({
           success:true,
           message:'Course created successfully',
@@ -239,7 +239,7 @@ exports.getFullCourseDetails = async (req, res) => {
         userId: userId,
       })
   
-      console.log("courseProgressCount : ", courseProgressCount)
+      //console.log("courseProgressCount : ", courseProgressCount)
   
       if (!courseDetails) {
         return res.status(400).json({

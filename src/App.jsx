@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import MyCourses from "./components/core/Dashboard/MyCourse";
 import Instructor from "./components/core/Dashboard/Instructor";
 import AddCourse from "./components/core/Dashboard/AddCourse";
+import EditCourse from "./components/core/Dashboard/EditCourse";
 
 function App() {
   console.log("app started");
@@ -105,6 +106,7 @@ function App() {
                   <Route path="dashboard/instructor" element={<Instructor/>} />
                   <Route path="dashboard/my-courses"  element={<MyCourses/>} />
                   <Route path="dashboard/add-course" element={<AddCourse/>} />
+                  <Route path="dashboard/edit-course/:courseId" element={<EditCourse/>} />
                   </>
                 )
               }
