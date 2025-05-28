@@ -353,6 +353,12 @@ exports.getFullCourseDetails = async (req, res) => {
       await User.findByIdAndUpdate(instructorId, {
         $pull: { courses: courseId },
       })
+      await Category.findByIdAndUpdate(
+        course.category,
+        {
+          $pull: { course: courseId },
+        }
+      )
       // Delete the course
       await Course.findByIdAndDelete(courseId)
   

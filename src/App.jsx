@@ -23,6 +23,7 @@ import MyCourses from "./components/core/Dashboard/MyCourse";
 import Instructor from "./components/core/Dashboard/Instructor";
 import AddCourse from "./components/core/Dashboard/AddCourse";
 import EditCourse from "./components/core/Dashboard/EditCourse";
+import Catalog from "./pages/Catalog";
 
 function App() {
   console.log("app started");
@@ -34,6 +35,7 @@ function App() {
       <NavBar/>
       <Routes >
         <Route path = '/' element={<Home/>} />
+        <Route path="catalog/:catalogName" element={<Catalog/>}/>
         <Route path="signup" element={
               <OpenRoute>
                 <Signup/>
