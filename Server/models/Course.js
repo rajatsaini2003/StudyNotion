@@ -6,11 +6,11 @@ const courseSchema = new mongoose.Schema({
     description: {
         type: String
     },
-    instructor: [{
+    instructor: {
         type: mongoose.Schema.Types.ObjectId,
         ref:'User',
         required: true
-    }],
+    },
     whatYouWillLearn: {
         type: String
     },

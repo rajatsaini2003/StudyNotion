@@ -52,13 +52,17 @@ exports.showAllCategory = async (req, res) => {
 exports.categoryPageDetails = async (req, res) => {
     try {
       const { categoryId } = req.body
-      console.log("PRINTING CATEGORY ID: ", categoryId);
+      //console.log("PRINTING CATEGORY ID: ", categoryId);
       // Get courses for the specified category
       const selectedCategory = await Category.findById(categoryId)
         .populate({
           path: "course",
           match: { status: "Published" },
-          populate: "ratingAndReview",
+          populate: [{
+            path: "ratingAndReview"
+          }, {
+            path: "instructor"
+          }]
         })
         .exec()
   
@@ -90,6 +94,11 @@ exports.categoryPageDetails = async (req, res) => {
         .populate({
           path: "course",
           match: { status: "Published" },
+          populate: [{
+            path: "ratingAndReview"
+          }, {
+            path: "instructor"
+          }]
         })
         .exec()
         //console.log("Different COURSE", differentCategory)
@@ -98,9 +107,11 @@ exports.categoryPageDetails = async (req, res) => {
         .populate({
           path: "course",
           match: { status: "Published" },
-          populate: {
-            path: "instructor",
-        },
+          populate: [{
+            path: "ratingAndReview"
+          }, {
+            path: "instructor"
+          }]
         })
         .exec()
       const allCourses = allCategories.flatMap((category) => category.course)

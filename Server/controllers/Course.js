@@ -12,7 +12,7 @@ const { convertSecondsToDuration } = require("../utils/secToDuration")
 // createCourse handler function
 exports.createCourse = async (req,res) => {
   try {
-      const{courseName, courseDescription, whatYouWillLearn, price, category,tags,status, instructions} = req.body;
+      const{courseName, courseDescription, whatYouWillLearn, price, category,tag,status, instructions} = req.body;
 
       const thumbnail = req.files.thumbnailImage;
       //console.log("Thumbnail in course creation is", thumbnail)
@@ -43,7 +43,7 @@ exports.createCourse = async (req,res) => {
           thumbnail:thumbnailImage.secure_url,
           category,
           instructor:instructorId,
-          tag:tags,
+          tag:tag,
           status,
           instructions
       })

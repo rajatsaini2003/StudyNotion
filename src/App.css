@@ -101,3 +101,7 @@ html,  body{
     line-height: 24px;
     padding: 0.75rem;
 }
+
+.section_heading {
+  @apply text-2xl font-bold text-richblack-5 lg:text-4xl;
+}

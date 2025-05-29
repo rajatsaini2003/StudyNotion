@@ -231,15 +231,15 @@ const CourseInformationForm = () => {
             </label>
 
             <select 
-            id='courseCategory'
-            {...register("courseCategory", {required:true})}
-            className='form-style w-full'
-            value={getValues().courseCategory || ""}>
+                id='courseCategory'
+                {...register("courseCategory", {required:true})}
+                className='form-style w-full'
+            >
                 <option value="" disabled>Choose a category</option>
                 {
                     !loading && 
-                    courseCategories.map((category, index) => (
-                        <option value={category?._id} key={index}>
+                    courseCategories.map((category) => (
+                        <option value={category?._id} key={category._id}>
                             {category?.name}
                         </option>
                     ))
@@ -247,10 +247,11 @@ const CourseInformationForm = () => {
             </select>
             {errors.courseCategory && (
                 <span className="ml-2 text-xs tracking-wide text-pink-200">
-                Course Category is required
+                    Course Category is required
                 </span>
             )}
         </div>
+
 
         {/* Tags component */}
         <ChipInput
