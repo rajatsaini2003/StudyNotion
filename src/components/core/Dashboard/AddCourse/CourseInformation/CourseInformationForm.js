@@ -32,34 +32,36 @@ const CourseInformationForm = () => {
     const [courseCategories, setCourseCategories] = useState([])
     
     useEffect(() => {
-      // console.log("Course from slice in the step 1 form is", course)
-      // console.log("EditCourse from slice in the step 1 form is", editCourse)
       const getCategories = async () => {
         setLoading(true);
-
         const categories = await fetchCourseCategories()
          //console.log("categories respnse is",categories)
         if (categories.length > 0) {
              //console.log("categories", categories)
             setCourseCategories(categories)
-          }
-          setLoading(false)
+        }
+        setLoading(false)
       }
-      // if form is in edit mode
-      if (editCourse) {
-        // console.log("data populated", editCourse)
-        //console.log(course);
+      getCategories()
+    }, [])
+
+    // Separate useEffect to populate form data after categories are loaded
+    useEffect(() => {
+      if (editCourse && course && courseCategories.length > 0) {
+        // console.log("Populating form data:", course)
+        // console.log("Available categories:", courseCategories)
+        // console.log("Course category:", course.category)
+        
         setValue("courseTitle", course.courseName)
         setValue("courseShortDesc", course.description)
         setValue("coursePrice", course.price)
         setValue("courseTags", course.tag)
         setValue("courseBenefits", course.whatYouWillLearn)
-        setValue("courseCategory", course.category)
+        setValue("courseCategory", course.category._id || course.category)
         setValue("courseRequirements", course.instructions)
         setValue("courseImage", course.thumbnail)
       }
-      getCategories()
-    }, [])
+    }, [editCourse, course, courseCategories, setValue])
     
     const isFormUpdated = () => {
         const currentValues = getValues();
@@ -70,7 +72,7 @@ const CourseInformationForm = () => {
             currentValues.coursePrice !== course.price ||
             currentValues.courseTags.toString() !== course.tag.toString() ||
             currentValues.courseBenefits !== course.whatYouWillLearn ||
-            currentValues.courseCategory._id !== course.category._id ||
+            currentValues.courseCategory !== course.category._id ||
             currentValues.courseRequirements.toString() !==
             course.instructions.toString() ||
             currentValues.courseImage !== course.thumbnail
@@ -96,12 +98,13 @@ const CourseInformationForm = () => {
                 formData.append("price", data.coursePrice)
                 }
                 if (currentValues.courseTags.toString() !== course.tag.toString()) {
-                  data.courseTags.forEach(tg => formData.append("tags", tg));
+                  // Send each tag as individual entry - backend will receive as array
+                  data.courseTags.forEach(tag => formData.append("tag", tag));
                 }
                 if (currentValues.courseBenefits !== course.whatYouWillLearn) {
                 formData.append("whatYouWillLearn", data.courseBenefits)
                 }
-                if (currentValues.courseCategory._id !== course.category._id) {
+                if (currentValues.courseCategory !== course.category._id) {  // Fix: Compare with category ID
                 formData.append("category", data.courseCategory)
                 }
                 if (currentValues.courseRequirements.toString() !== course.instructions.toString()) {
@@ -111,6 +114,12 @@ const CourseInformationForm = () => {
                 formData.append("thumbnailImage", data.courseImage)
                 }
                 // console.log("Edit Form data: ", formData)
+                // Debug: Log all FormData entries
+                console.log("FormData contents:")
+                for (let [key, value] of formData.entries()) {
+                    console.log(key, value);
+                }
+                console.log("Tags being sent:", data.courseTags)
                 setLoading(true)
                 const result = await editCourseDetails(formData, token)
                 setLoading(false)
@@ -125,6 +134,7 @@ const CourseInformationForm = () => {
             return
         }
 
+        // For new course creation
         const formData = new FormData();
         formData.append("courseName", data.courseTitle)
         formData.append("courseDescription", data.courseShortDesc)
@@ -133,7 +143,8 @@ const CourseInformationForm = () => {
         formData.append("whatYouWillLearn", data.courseBenefits)
         formData.append("category", data.courseCategory)
         formData.append("status", COURSE_STATUS.DRAFT)
-        data.courseTags.forEach(tg => formData.append("tags", tg));
+        // Send each tag as individual entry with field name "tag" (to match schema)
+        data.courseTags.forEach(tag => formData.append("tag", tag));
         formData.append("thumbnailImage", data.courseImage)
 
         setLoading(true);
@@ -221,9 +232,9 @@ const CourseInformationForm = () => {
 
             <select 
             id='courseCategory'
-            defaultValue=""
             {...register("courseCategory", {required:true})}
-            className='form-style w-full'>
+            className='form-style w-full'
+            value={getValues().courseCategory || ""}>
                 <option value="" disabled>Choose a category</option>
                 {
                     !loading && 
