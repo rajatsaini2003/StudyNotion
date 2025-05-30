@@ -12,7 +12,7 @@ const CartCourses = () => {
     const dispatch = useDispatch();
 
     const getRating = (course) => {
-        const count = GetAvgRating(course?.courseDetails.ratingAndReviews);
+        const count = GetAvgRating(course?.courseDetails.ratingAndReview);
         return count;
       }
 
@@ -51,7 +51,7 @@ const CartCourses = () => {
                   fullIcon={<FaStar />}
                 />
                 <span className="text-richblack-400">
-                  {course?.ratingAndReviews?.length} Ratings
+                  {course?.ratingAndReview?.length} Ratings
                 </span>
               </div>
             </div>

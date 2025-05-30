@@ -4,17 +4,11 @@ import GetAvgRating from '../../../utils/avgRating';
 import { Link } from 'react-router-dom';
 
 const CourseCard = ({course, Height}) => {
-
-
-    const [avgReviewCount, setAvgReviewCount] = useState(0);
-
-    useEffect(()=> {
-        const count = GetAvgRating(course.ratingAndReviews);
-        setAvgReviewCount(count);
-    },[course])
-
-
-    
+  const [avgReviewCount, setAvgReviewCount] = useState(0);
+  useEffect(()=> {
+    const count = GetAvgRating(course.ratingAndReview);
+    setAvgReviewCount(count);
+  },[course]) 
   return (
     <>
       <Link to={`/courses/${course._id}`}>
@@ -35,7 +29,7 @@ const CourseCard = ({course, Height}) => {
               <span className="text-yellow-5">{avgReviewCount || 0}</span>
               <RatingStars Review_Count={avgReviewCount} />
               <span className="text-richblack-400">
-                {course?.ratingAndReviews?.length} Ratings
+                {course?.ratingAndReview?.length} Ratings
               </span>
             </div>
             <p className="text-xl text-richblack-5">Rs. {course?.price}</p>
