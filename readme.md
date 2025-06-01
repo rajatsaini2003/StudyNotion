@@ -20,7 +20,7 @@ The StudyNotion ed-tech platform follows a client-server architecture with the f
 - **Back-end**: Developed with NodeJS and ExpressJS, it handles user authentication, course management, and more.
 - **Database**: Utilizes MongoDB as a NoSQL database to store course content, user data, and other relevant information.
 
-![System Architecture Diagram](./src/assets/architecture.png)
+![System Architecture Diagram](./src/assets/images/architecture.png)
 
 
 ---
