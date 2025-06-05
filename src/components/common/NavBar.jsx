@@ -13,12 +13,13 @@ import { useDispatch } from 'react-redux'
 import { setLoading } from '../../slices/authSlice'
 import { logout } from '../../services/operations/authAPI'
 import { useNavigate } from 'react-router-dom'
+import { ACCOUNT_TYPE } from '../../utils/constants'
 const NavBar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {token}=useSelector((state)=>state.auth);
     const {user}=useSelector((state)=>state.profile);
-    
+    const location = useLocation();
     const {totalItems} = useSelector((state)=>state.cart);
     const {loading} = useSelector((state)=>state.auth);
     const [subLinks, setSubLinks] = useState([]);
@@ -54,14 +55,13 @@ const NavBar = () => {
         }
     }, []);
 
-    const location = useLocation();
-    const matchRoute =(route)=>{
-        return matchPath({path: route}, location.pathname);
-    }
+    const matchRoute = (route) => {
+        return location.pathname === route;
+    };
   return (
     <div className='flex h-14 items-center justify-center border-b-[1px] border-b-richblue-700'>
         <div className='flex w-11/12 max-w-maxContent items-center justify-between'>
-            <Link to='/'>
+            <Link to='/' >
                 <img src={logo} 
                 alt="StudyNotion" 
                 width={160}
@@ -125,17 +125,15 @@ const NavBar = () => {
             {/*LoginSignupDashBoard*/}
             <div className='flex gap-x-4 items-center'>
                 {
-                    user && user?.accountType === 'Student' && (
+                    user && user?.accountType === ACCOUNT_TYPE.STUDENT && (
                         <Link to='/dashboard/cart'
                         className='relative'>
-                            <AiOutlineShoppingCart/>
-                            {
-                                totalItems>0 &&(
-                                    <span>
-                                        {totalItems}
-                                    </span>
-                                )
-                            }
+                            <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
+                            {totalItems > 0 && (
+                                <span className="absolute -bottom-2 -right-2 grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-500">
+                                {totalItems}
+                                </span>
+                            )}
                         </Link>
                     )
                 }

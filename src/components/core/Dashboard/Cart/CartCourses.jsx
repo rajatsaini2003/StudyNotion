@@ -12,7 +12,8 @@ const CartCourses = () => {
     const dispatch = useDispatch();
 
     const getRating = (course) => {
-        const count = GetAvgRating(course?.courseDetails.ratingAndReview);
+        //console.log(course)
+        const count = GetAvgRating(course?.ratingAndReview);
         return count;
       }
 
@@ -43,7 +44,7 @@ const CartCourses = () => {
                 <span className="text-yellow-5">4.5</span>
                 <ReactStars
                   count={5}
-                  value={course?.ratingAndReviews?.length}
+                  value={course?.ratingAndReview?.length}
                   size={20}
                   edit={false}
                   activeColor="#ffd700"
