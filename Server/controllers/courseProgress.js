@@ -2,11 +2,11 @@ const CourseProgress = require("../models/CourseProgress");
 const SubSection = require("../models/SubSection");
 
 exports.updateCourseProgress = async (req,res) => {
-    const {courseId, subSectionId} = req.body;
+    const {courseId, subsectionId} = req.body;
     const userId = req.user.id;
 
     try {
-        const subSection = await SubSection.findById(subSectionId);
+        const subSection = await SubSection.findById(subsectionId);
 
         if(!subSection){
             return res.status(404).json({
@@ -25,14 +25,14 @@ exports.updateCourseProgress = async (req,res) => {
             })
         }
         else{
-            if (courseProgress.completedVideos.includes(subSectionId)) {
+            if (courseProgress.completedVideos.includes(subsectionId)) {
                 return res.status(200).json({
                     success:false,
                     message:"Video already completed"
                 })
             }
 
-            courseProgress.completedVideos.push(subSectionId);
+            courseProgress.completedVideos.push(subsectionId);
             console.log("Copurse Progress Push Done");
         }
         await courseProgress.save();
