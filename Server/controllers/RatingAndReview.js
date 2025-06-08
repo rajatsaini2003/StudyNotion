@@ -1,7 +1,6 @@
-const ratingAndReview = require('../models/RatingAndReview')
 const Course = require('../models/Course');
 const RatingAndReview = require('../models/RatingAndReview');
-
+const mongoose = require("mongoose")
 //createRating
 exports.createRating = async (req, res) =>{
     try {
@@ -51,7 +50,7 @@ exports.createRating = async (req, res) =>{
                                                         {new:true}
                                                     )
         
-        console.log(updatedCourse);                           
+        //console.log(updatedCourse);                           
         //return response
         return res.status(200).json({
             success: true,
