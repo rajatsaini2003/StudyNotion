@@ -4,6 +4,7 @@ import { BsFillChatRightDotsFill } from 'react-icons/bs';
 import { BsGlobeAmericas } from 'react-icons/bs';
 import { IoIosCall } from 'react-icons/io';
 import Footer from '../components/common/Footer';
+import RatingSlider from '../components/common/RatingSlider';
 const ContactUs = () => {
     const contactData = [
         {
@@ -55,10 +56,12 @@ const ContactUs = () => {
                     </div>
             </div>
         </div>
-        <div>
-            Reviews From other users
-            {/* <ReviewSlider/> */}
-        </div>
+        <section  className='w-11/12 mx-auto max-w-maxContent flex-col items-center pt-[100px] 
+        justify-between gap-8 first-letter bg-richblack-900 text-white'>
+            <h2 className='text-center text-4xl font-semibold mt-10'> 
+            Review Form Other Learners</h2>
+            <RatingSlider/>
+        </section>
         <Footer/>
     </div>
   )

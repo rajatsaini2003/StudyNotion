@@ -35,7 +35,7 @@ exports.createRating = async (req, res) =>{
                                         }
                                         
         //create rating and review
-        console.log(existingReview)
+        //console.log(existingReview)
         const ratingAndReview= await RatingAndReview.create({
             rating: rating,
             review: review,
@@ -120,9 +120,9 @@ exports.getAllRating = async (req,res) => {
     try {
         const allReviews = await RatingAndReview.find(
             ).sort({rating: -1})
-            .populate({path: "User",
+            .populate({path: "user",
             select: "firstName lastName email image"})
-            .populate({path: "Course",
+            .populate({path: "course",
             select: "courseName"})
             .exec();
             
