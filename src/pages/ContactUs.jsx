@@ -10,12 +10,12 @@ const ContactUs = () => {
         {
             title:"Chat on us",
             desc:"Our friendly team is here to help.",
-            address:"info@studynotion.com"
+            address:"loremispum@gmail.no"
         },
         {
             title:"Visit us",
             desc:"Come and say hello at our office HQ.",
-            address:"Akshya Nagar 1st Block 1st Cross, Rammurthy nagar, Bangalore-560016"
+            address:"Lorem ispum nagar chor bazar shaitan gali shamshaan shaat ke saamne"
         },
         {
             title:"Call us",
