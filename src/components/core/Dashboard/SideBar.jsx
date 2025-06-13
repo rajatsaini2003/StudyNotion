@@ -51,7 +51,7 @@ const SideBar = () => {
             btn1Text:"Logout",
             btn2Text:"Cancel",
             btn1Handler:()=>{
-              console.log("You will be logged out of your Account");
+              //console.log("You will be logged out of your Account");
               dispatch(logout(navigate))
             },
             btn2Handler:()=>setConfModal(null)

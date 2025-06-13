@@ -115,11 +115,11 @@ const CourseInformationForm = () => {
                 }
                 // console.log("Edit Form data: ", formData)
                 // Debug: Log all FormData entries
-                console.log("FormData contents:")
-                for (let [key, value] of formData.entries()) {
-                    console.log(key, value);
-                }
-                console.log("Tags being sent:", data.courseTags)
+               // console.log("FormData contents:")
+                // for (let [key, value] of formData.entries()) {
+                //     console.log(key, value);
+                // }
+                // console.log("Tags being sent:", data.courseTags)
                 setLoading(true)
                 const result = await editCourseDetails(formData, token)
                 setLoading(false)

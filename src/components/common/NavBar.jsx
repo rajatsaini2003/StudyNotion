@@ -93,7 +93,7 @@ const NavBar = () => {
                                                     ?(
                                                         <div className="spinner"></div>
                                                     ):(
-                                                        subLinks.length ? (
+                                                        subLinks?.length ? (
                                                         subLinks.map((subLink, index)=>(
                                                             <Link 
                                                             to={`/catalog/${subLink.name.split(" ").join("-").toLowerCase()}`} 

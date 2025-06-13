@@ -7,7 +7,7 @@ import CourseInformationForm from "./CourseInformation/CourseInformationForm.js"
 import PublishCourse from "./PublishCourse"
 const RenderSteps = () => {
     const {step} = useSelector((state)=> state.course)
-    console.log("Step", step)
+    //console.log("Step", step)
     const steps = [ 
         {id:1,
         title: "Course Information"},

@@ -34,12 +34,12 @@ const RatingSlider = () => {
     };})
     const fetchReviews = async()=>{
         const res = await apiConnector("GET",ratingsEndpoints.REVIEWS_DETAILS_API);
-        console.log("rating : ",res);
+        //console.log("rating : ",res);
         const data = res.data.data;
-        console.log(data)
+        //console.log(data)
         if(res?.data?.success){
            setReviews(data);
-            console.log("printing reviews:", reviews);
+           // console.log("printing reviews:", reviews);
         }
 
     }
