@@ -84,7 +84,7 @@ const NavBar = () => {
                                             translate-x-[-50%] translate-y-[20%] top-[50%]
                                             flex flex-col rounded-md bg-richblack-5 p-4 text-richblack-900
                                             opacity-0 transition-all duration-200 group-hover:visible
-                                            group-hover:opacity-100 lg:min-w-[150px] z-10 justify-center items-center'>
+                                            group-hover:opacity-100 lg:min-w-[150px] z-20 justify-center items-center'>
                                                 <div className='absolute left-[50%] top-0 h-6 w-6 rotate-45 rounded bg-richblack-5
                                                 translate-x-[80%] translate-y-[-45%]'>
                                                 </div>
