@@ -15,7 +15,7 @@ export function getUserDetails(token, navigate){
           const response = await apiConnector("GET", GET_USER_DETAILS_API, null, {
             Authorization: `Bearer ${token}`,
           })
-          console.log("GET_USER_DETAILS API RESPONSE............", response)
+          //console.log("GET_USER_DETAILS API RESPONSE............", response)
     
           if (!response.data.success) {
             throw new Error(response.data.message)
@@ -48,10 +48,10 @@ export async function getUserEnrolledCourses(token) {
         }
       )
       //console.log("AFTER Calling BACKEND API FOR ENROLLED COURSES");
-      console.log(
-        "GET_USER_ENROLLED_COURSES_API API RESPONSE............",
-        response
-      )
+      // console.log(
+      //   "GET_USER_ENROLLED_COURSES_API API RESPONSE............",
+      //   response
+      // )
   
       if (!response.data.success) {
         throw new Error(response.data.message)
@@ -74,7 +74,7 @@ export async function getUserEnrolledCourses(token) {
       {
         Authorization: `Bearer ${token}`
       } )
-      console.log("GET_INSTRUCTOR_DATA_API response....", response)
+      //console.log("GET_INSTRUCTOR_DATA_API response....", response)
       result= response?.data?.courses
     } catch (error) {
       console.log("GET_INSTRUCTOR_DATA_API API ERROR............", error)

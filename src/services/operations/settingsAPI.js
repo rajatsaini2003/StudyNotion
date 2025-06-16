@@ -25,10 +25,7 @@ export function updateDisplayPicture(token, formData) {
             Authorization: `Bearer ${token}`,
           }
         )
-        console.log(
-          "UPDATE_DISPLAY_PICTURE_API API RESPONSE............",
-          response
-        )
+        //console.log("UPDATE_DISPLAY_PICTURE_API API RESPONSE............",response)
   
         if (!response.data.success) {
           throw new Error(response.data.message)
@@ -56,7 +53,7 @@ export function updateProfile(token, updatedProfileData) {
           Authorization:`Bearer ${token}`
         }
       );
-      console.log("update profile API response: " , response);
+      //console.log("update profile API response: " , response);
       if(!response.data.success) {
         throw new Error(response.data.message)
       }
@@ -82,7 +79,7 @@ export function changePassword(token,data){
       const response = await apiConnector("POST", CHANGE_PASSWORD_API,data,{
         Authorization: `Bearer ${token}`
       })
-      console.log("Change Password Api Response.....",response)
+      //console.log("Change Password Api Response.....",response)
       if(!response.data.success){
         throw new Error(response.data.message)
       }
@@ -103,7 +100,7 @@ export function deleteProfile(token,navigate){
       const response = await apiConnector("DELETE",DELETE_PROFILE_API,null,{
         Authorization: `Bearer ${token}`
       })
-      console.log("Delete Profile API Response.....",response);
+      //console.log("Delete Profile API Response.....",response);
       if(!response.data.success){
         throw new Error(response.data.message)
       }

@@ -54,7 +54,7 @@ const CourseBuilderForm = () => {
       setValue("sectionName", "")
     }
     setLoading(false)
-    console.log("Create/Update Section Response", result);
+    //console.log("Create/Update Section Response", result);
 
   }
 

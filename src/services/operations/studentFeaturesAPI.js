@@ -46,7 +46,7 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
         if(!orderResponse.data.success) {
             throw new Error(orderResponse.data.message);
         }
-        console.log("PRINTING orderResponse", orderResponse);
+       // console.log("PRINTING orderResponse", orderResponse);
         //options
         const options = {
             key: RAZORPAY_KEY,
@@ -67,8 +67,7 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
                 verifyPayment({...response, courses}, token, navigate, dispatch);
             }
         }
-        console.log(options)
-        //miss hogya tha 
+        //console.log(options)
         const paymentObject = new window.Razorpay(options);
         paymentObject.open();
         paymentObject.on("payment.failed", function(response) {
